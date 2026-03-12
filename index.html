@@ -688,6 +688,13 @@
 
     /* Mobile: ≤ 767px */
     @media (max-width: 767px) {
+      /* ── On mobile: always show section content (no canvas-driven opacity) ── */
+      #problem  .section-body-zone, #problem  .section-body-zone.reveal.in, #problem  .section-body-zone.reveal.out,
+      #services .section-body-zone, #services .section-body-zone.reveal.in, #services .section-body-zone.reveal.out,
+      #process  .section-body-zone, #process  .section-body-zone.reveal.in, #process  .section-body-zone.reveal.out,
+      #metrics  .section-body-zone, #metrics  .section-body-zone.reveal.in, #metrics  .section-body-zone.reveal.out {
+        opacity: 1 !important;
+      }
       /* ── Nav ── */
       .nav-inner { grid-template-columns: 1fr auto; }
       .nav-links { display: none; }
@@ -704,10 +711,11 @@
 
       /* ── Sections ── */
       #problem, #services, #process, #metrics {
-        min-height: 320vh;
-        padding: clamp(56px,8vh,90px) clamp(1rem,5vw,1.75rem) clamp(80px,10vh,120px);
+        min-height: auto;
+        padding: clamp(72px,10vh,100px) clamp(1rem,5vw,1.75rem) clamp(80px,10vh,120px);
       }
-      .section-sticky { top: clamp(2rem, 6vh, 4rem); }
+      /* Disable sticky on mobile — sections scroll normally */
+      .section-sticky { position: static; top: auto; }
       .section-title { font-size: clamp(26px, 7.5vw, 42px); letter-spacing: -1px; line-height: 1.1; }
       .section-sub { font-size: 14px; }
       .section-hd-center { margin-bottom: clamp(1.5rem, 4vh, 2.5rem); }
@@ -730,8 +738,26 @@
 
       /* ── Services ── */
       .services-hd { margin-bottom: 48px; }
-      .svc-grid { min-height: 80vh; }
-      .svc-group, .metrics-grid { grid-template-columns: 1fr; gap: 36px; }
+      /* On mobile: both groups in normal flow, stacked vertically */
+      .svc-grid { min-height: unset; position: static; }
+      .svc-group {
+        position: static !important;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 28px;
+        margin-bottom: 28px;
+      }
+      /* Show all cards (no scroll-driven opacity animation on mobile) */
+      .svc-card, .metric-cell {
+        opacity: 1 !important;
+        transform: none !important;
+      }
+      /* Hide second group normally hidden by JS — on mobile show both */
+      .svc-group.grp-hidden {
+        opacity: 1 !important;
+        pointer-events: auto !important;
+        display: grid !important;
+      }
       .svc-card h3 { font-size: 15px; }
       .svc-card p  { font-size: 13px; }
 
@@ -744,7 +770,8 @@
 
       /* ── Metrics ── */
       .metrics-hd { margin-bottom: 48px; }
-      .metrics-body { min-height: 80vh; }
+      .metrics-body { min-height: unset; }
+      .metrics-grid { grid-template-columns: 1fr; gap: 36px; }
       .metric-val { font-size: 52px; letter-spacing: -3px; }
       .metric-label { font-size: 13px; }
 
@@ -1706,9 +1733,10 @@
       for (let s = 0; s < 4; s++) {
         document.documentElement.style.setProperty(`--form-t-${s}`, (shapeIdx === s ? formT : 0).toFixed(3));
       }
-      const pad = (formT * 55).toFixed(1) + 'vw';
-      document.documentElement.style.setProperty('--content-pad-right', figRight  ? pad : '0vw');
-      document.documentElement.style.setProperty('--content-pad-left',  !figRight ? pad : '0vw');
+      const isMobile = window.innerWidth < 768;
+      const pad = isMobile ? '0vw' : (formT * 55).toFixed(1) + 'vw';
+      document.documentElement.style.setProperty('--content-pad-right', (!isMobile && figRight)  ? pad : '0vw');
+      document.documentElement.style.setProperty('--content-pad-left',  (!isMobile && !figRight) ? pad : '0vw');
 
       const ang  = rotAngle;
       const cosA = Math.cos(ang), sinA = Math.sin(ang);
