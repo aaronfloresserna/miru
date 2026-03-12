@@ -13,6 +13,8 @@
       --bg:          #f5f8ff;
       --purple:      #5233ed;
       --purple-dark: #3022bb;
+      --accent:      rgb(82, 51, 237);
+      --accent-rgb:  82, 51, 237;
       --purple-deep: #171768;
       --text:        #27313f;
       --text-light:  #b8bfd1;
@@ -42,7 +44,7 @@
     #progress-bar {
       position: fixed; top: 0; left: 0; z-index: 999;
       height: 2px; width: 0%;
-      background: linear-gradient(90deg, var(--purple-dark), var(--purple), #a190f5);
+      background: var(--accent);
       transition: width .05s linear;
       pointer-events: none;
     }
@@ -52,15 +54,19 @@
     ══════════════════════════════════════ */
     .nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 500;
-      padding: 0 5rem;
+      padding: 0 clamp(1.25rem, 5vw, 5rem);
       height: 72px;
       display: flex; align-items: center;
       background: rgb(245,248,255);
       border: none;
     }
     .nav-inner {
-      max-width: 1280px; width: 100%; margin: 0 auto;
-      display: flex; align-items: center; justify-content: space-between;
+      width: 100%;
+      display: grid; grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+    }
+    .nav-right {
+      display: flex; align-items: center; justify-content: flex-end; gap: 12px;
     }
     .nav-logo {
       display: flex; align-items: center; gap: 10px;
@@ -77,9 +83,17 @@
       text-decoration: none; transition: color .2s;
     }
     .nav-links a:hover { color: var(--nav-color, #27313f); }
+    .lang-btn {
+      font-size: 12px; font-weight: 700; letter-spacing: .08em;
+      color: var(--nav-color-muted, rgba(39,49,63,0.55));
+      background: none; border: 1.5px solid currentColor;
+      padding: 6px 13px; border-radius: 10rem; cursor: pointer;
+      transition: color .3s, border-color .3s;
+    }
+    .lang-btn:hover { color: var(--nav-color, #27313f); }
     .nav-cta {
       font-size: 14px; font-weight: 700;
-      color: #fff; background: var(--purple);
+      color: #fff; background: var(--accent);
       padding: 11px 26px; border-radius: 10rem;
       text-decoration: none; letter-spacing: -0.2px;
       transition: background .2s, transform .2s, box-shadow .2s;
@@ -88,7 +102,7 @@
     .nav-cta:hover {
       background: var(--purple-dark);
       transform: translateY(-1px);
-      box-shadow: 0 6px 20px rgba(82,51,237,0.35);
+      box-shadow: 0 6px 20px rgba(var(--accent-rgb),0.35);
     }
 
     /* ══════════════════════════════════════
@@ -99,7 +113,7 @@
       background: transparent;
       display: flex; flex-direction: column; align-items: center;
       justify-content: center;
-      padding: 140px 5rem 80px;
+      padding: clamp(100px,12vh,140px) clamp(1.25rem,5vw,5rem) 80px;
       position: relative;
       text-align: center;
       z-index: 1;
@@ -108,11 +122,11 @@
     /* Hero text — dark on light bg at top, readable throughout */
     #hero h1 { color: var(--text); }
     .hero-badge {
-      background: rgba(82,51,237,0.08);
-      border-color: rgba(82,51,237,0.2);
-      color: var(--purple);
+      background: rgba(var(--accent-rgb),0.08);
+      border-color: rgba(var(--accent-rgb),0.2);
+      color: var(--accent);
     }
-    .badge-dot { background: var(--purple); }
+    .badge-dot { background: var(--accent); }
     .hero-sub { color: var(--text-light); }
 
     /* Sections after hero sit on top of the fixed canvas */
@@ -141,19 +155,19 @@
 
     .hero-badge {
       display: inline-flex; align-items: center; gap: 8px;
-      background: rgba(82,51,237,0.08);
-      border: 1px solid rgba(82,51,237,0.18);
+      background: rgba(var(--accent-rgb),0.08);
+      border: 1px solid rgba(var(--accent-rgb),0.18);
       border-radius: 10rem;
       padding: 6px 18px;
       font-size: 12px; font-weight: 700;
-      color: var(--purple); letter-spacing: .5px;
+      color: var(--accent); letter-spacing: .5px;
       text-transform: uppercase;
       margin-bottom: 32px;
     }
     .badge-dot {
       width: 7px; height: 7px; border-radius: 50%;
-      background: var(--purple);
-      box-shadow: 0 0 8px rgba(82,51,237,0.6);
+      background: var(--accent);
+      box-shadow: 0 0 8px rgba(var(--accent-rgb),0.6);
       animation: pulse-dot 2.2s ease-in-out infinite;
     }
     @keyframes pulse-dot {
@@ -206,16 +220,15 @@
 
     .btn-primary {
       display: inline-flex; align-items: center; gap: 8px;
-      background: var(--purple);
+      background: var(--accent);
       color: #fff; font-size: 15px; font-weight: 700;
       padding: 17px 36px; border-radius: 10rem;
       text-decoration: none; letter-spacing: -0.2px;
       position: relative; overflow: hidden;
-      transition: background .5s cubic-bezier(0.16,1,0.3,1), box-shadow .2s, transform .2s;
+      transition: box-shadow .2s, transform .2s;
     }
     .btn-primary:hover {
-      background: var(--purple-dark);
-      box-shadow: 0 8px 28px rgba(82,51,237,0.4);
+      box-shadow: 0 8px 28px rgba(var(--accent-rgb),0.4);
       transform: translateY(-2px);
     }
 
@@ -229,8 +242,8 @@
       transition: border-color .2s, background .2s;
     }
     .btn-secondary:hover {
-      border-color: var(--purple);
-      background: rgba(82,51,237,0.04);
+      border-color: var(--accent);
+      background: rgba(var(--accent-rgb),0.04);
     }
 
     /* ══════════════════════════════════════
@@ -261,7 +274,7 @@
     }
     .marquee-sep {
       width: 4px; height: 4px; border-radius: 50%;
-      background: rgba(82,51,237,0.3); flex-shrink: 0;
+      background: rgba(var(--accent-rgb),0.3); flex-shrink: 0;
     }
 
     /* ══════════════════════════════════════
@@ -269,7 +282,7 @@
     ══════════════════════════════════════ */
     .section-eyebrow {
       font-size: 12px; font-weight: 700; letter-spacing: 3px;
-      text-transform: uppercase; color: #a190f5;
+      text-transform: uppercase; color: var(--accent);
       margin-bottom: 18px;
     }
     .section-title {
@@ -286,13 +299,43 @@
        PROBLEM / CONTEXT SECTION
     ══════════════════════════════════════ */
     #problem {
-      padding: 140px 5rem;
+      padding: clamp(80px,10vh,140px) clamp(1.25rem,5vw,5rem) clamp(160px,20vh,260px);
+      min-height: 600vh;
       background: transparent;
     }
+    .section-hd-center {
+      text-align: center; margin-bottom: clamp(2rem, 5vh, 4rem);
+    }
+    /* Sequential scroll reveal — one at a time (absolute so hidden items take NO space) */
+    .seq-reveal {
+      position: absolute !important; top: 0; left: 0; width: 100%;
+      opacity: 0;
+      transform: translateY(32px);
+      /* EXIT: slow fade out upward */
+      transition: opacity 1.6s cubic-bezier(.16,1,.3,1), transform 1.6s cubic-bezier(.16,1,.3,1);
+      pointer-events: none;
+    }
+    .seq-reveal.seq-in {
+      opacity: 1;
+      transform: none;
+      pointer-events: auto;
+      /* ENTRANCE: slow & smooth */
+      transition: opacity 2.4s cubic-bezier(.16,1,.3,1), transform 2.4s cubic-bezier(.16,1,.3,1);
+    }
+    /* Accumulate reveal — items stay visible once shown (process steps) */
+    .seq-accum {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 2.4s cubic-bezier(.16,1,.3,1), transform 2.4s cubic-bezier(.16,1,.3,1);
+    }
+    .seq-accum.seq-in {
+      opacity: 1;
+      transform: none;
+    }
     .problem-wrap {
-      max-width: 1280px; margin: 0 auto;
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 100px; align-items: center;
+      max-width: 640px; margin: 0 auto;
+      display: flex; flex-direction: column; gap: 0;
+      position: relative;
     }
 
     .prob-items { margin-top: 44px; display: flex; flex-direction: column; }
@@ -350,7 +393,8 @@
        SERVICES  (loanpro.io dark cards clone)
     ══════════════════════════════════════ */
     #services {
-      padding: 140px 5rem;
+      padding: clamp(80px,10vh,140px) clamp(1.25rem,5vw,5rem) clamp(160px,20vh,260px);
+      min-height: 600vh;
       background: transparent;
     }
     .services-hd {
@@ -359,111 +403,89 @@
     }
     .services-hd .section-title { color: #fff; }
 
-    /* Grid: 3 columns */
     .svc-grid {
-      max-width: 1280px; margin: 0 auto;
-      display: grid; grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
+      max-width: 900px; margin: 0 auto;
+      position: relative; min-height: 55vh;
+    }
+    .svc-group {
+      position: absolute; top: 0; left: 0; width: 100%;
+      display: grid; grid-template-columns: repeat(3,1fr); gap: 40px;
     }
 
-    /* Card: dark background, very rounded — exactly like loanpro.io */
+    /* Service card — same style as process .step */
+    .svc-grid { counter-reset: svc-n; }
     .svc-card {
-      background: #09090a;
-      border-radius: 3rem;
-      overflow: hidden;
+      background: transparent;
       display: flex; flex-direction: column;
-      transition: transform .3s cubic-bezier(.16,1,.3,1), box-shadow .3s;
-      position: relative;
+      padding: 0;
     }
-    .svc-card:hover {
-      transform: translateY(-4px) scale(1.01);
-      box-shadow: 0 24px 60px rgba(16,16,42,0.2);
-    }
-    /* Purple variant for alternating cards */
-    .svc-card.purple { background: var(--purple-dark); }
-
-    /* Icon illustration area */
-    .svc-card-vis {
-      height: 180px;
+    .svc-card.purple { background: transparent; }
+    .svc-card-vis { display: none; }
+    .svc-card::before {
+      counter-increment: svc-n;
+      content: "0" counter(svc-n);
+      width: 44px; height: 44px; border-radius: 50%;
+      border: 1.5px solid rgba(255,255,255,0.15);
       display: flex; align-items: center; justify-content: center;
-      position: relative;
-      overflow: hidden;
+      font-size: 13px; font-weight: 700; color: var(--accent);
+      background: rgba(255,255,255,0.04);
+      margin-bottom: 28px;
+      flex-shrink: 0;
     }
-    .svc-card-vis::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: radial-gradient(ellipse 80% 80% at 50% 60%,
-        rgba(255,255,255,0.06) 0%, transparent 70%);
-    }
-    .svc-card-vis .svc-icon {
-      width: 88px; height: 88px;
-      position: relative; z-index: 1;
-      filter: drop-shadow(0 8px 24px rgba(161,144,245,0.3));
-      transition: transform .4s cubic-bezier(.16,1,.3,1);
-    }
-    .svc-card:hover .svc-icon { transform: scale(1.08) translateY(-4px); }
-
-    /* Text content */
     .svc-card-info {
-      padding: 28px 32px 36px;
-      flex: 1; display: flex; flex-direction: column;
+      padding: 0;
+      display: flex; flex-direction: column;
     }
     .svc-card h3 {
-      font-size: 19px; font-weight: 700;
-      color: #fff; margin-bottom: 12px;
-      letter-spacing: -0.3px;
+      font-size: 17px; font-weight: 700;
+      color: #fff; margin-bottom: 10px; letter-spacing: -0.3px;
     }
     .svc-card p {
-      font-size: 15px; color: rgba(255,255,255,0.55);
-      line-height: 1.65; margin-bottom: 24px; flex: 1;
+      font-size: 14px; color: rgba(255,255,255,0.4);
+      line-height: 1.7; margin-bottom: 20px;
     }
     .svc-link {
-      color: rgba(255,255,255,0.4);
-      font-size: 14px; font-weight: 600;
-      text-decoration: none;
+      color: #a190f5; font-size: 13px; font-weight: 600;
+      text-decoration: none; opacity: 0.7;
       display: inline-flex; align-items: center; gap: 6px;
-      transition: color .2s;
+      transition: opacity .2s;
     }
-    .svc-link:hover { color: #fff; }
-    .svc-link svg { width: 16px; height: 16px; transition: transform .2s; }
-    .svc-link:hover svg { transform: translateX(4px); }
+    .svc-link:hover { opacity: 1; }
+    .svc-link svg { width: 14px; height: 14px; transition: transform .2s; }
+    .svc-link:hover svg { transform: translateX(3px); }
 
     /* ══════════════════════════════════════
        PROCESS  (light section, 4 steps)
     ══════════════════════════════════════ */
     #process {
-      padding: 140px 5rem;
+      padding: clamp(80px,10vh,140px) clamp(1.25rem,5vw,5rem) clamp(160px,20vh,260px);
+      min-height: 600vh;
       background: transparent;
     }
     .process-wrap { max-width: 1280px; margin: 0 auto; }
-    .process-hd { margin-bottom: 80px; }
-    .process-hd .section-eyebrow { color: var(--purple); }
+    .process-hd { margin-bottom: 80px; text-align: center; }
+    .process-hd .section-eyebrow { color: var(--accent); }
 
     .steps {
       display: grid; grid-template-columns: repeat(4,1fr);
       gap: 32px; position: relative;
     }
-    .steps::before {
-      content: '';
-      position: absolute; top: 22px; left: 11%; right: 11%;
-      height: 1px;
-      background: linear-gradient(90deg, #a190f5 0%, rgba(255,255,255,0.08) 100%);
-    }
+    .steps::before { display: none; }
     .step { padding-right: 24px; }
     .step-num {
       width: 44px; height: 44px; border-radius: 50%;
       border: 1.5px solid rgba(255,255,255,0.15);
       display: flex; align-items: center; justify-content: center;
-      font-size: 13px; font-weight: 700; color: #a190f5;
+      font-size: 13px; font-weight: 700; color: var(--accent);
       background: rgba(255,255,255,0.04);
       position: relative; z-index: 1;
       margin-bottom: 28px;
       transition: background .3s, border-color .3s, box-shadow .3s;
     }
     .step:hover .step-num {
-      background: rgba(82,51,237,0.15);
-      border-color: #a190f5;
-      box-shadow: 0 0 0 4px rgba(82,51,237,0.12);
+      background: rgba(var(--accent-rgb),0.15);
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px rgba(var(--accent-rgb),0.12);
     }
     .step h3 {
       font-size: 17px; font-weight: 700; color: #fff;
@@ -473,66 +495,59 @@
     .step-week {
       display: inline-block; margin-top: 18px;
       font-size: 11px; font-weight: 700; letter-spacing: 2px;
-      text-transform: uppercase; color: #a190f5;
+      text-transform: uppercase; color: var(--accent);
       opacity: 0.6;
     }
 
     /* ══════════════════════════════════════
        METRICS
     ══════════════════════════════════════ */
-    #metrics { padding: 140px 5rem; background: transparent; }
+    #metrics { padding: clamp(80px,10vh,140px) clamp(1.25rem,5vw,5rem) clamp(160px,20vh,260px); min-height: 600vh; background: transparent; }
     .metrics-wrap { max-width: 1280px; margin: 0 auto; }
     .metrics-hd { text-align: center; margin-bottom: 72px; }
     .metrics-hd .section-sub { margin: 0 auto; max-width: 520px; }
 
-    .metrics-grid {
-      display: grid; grid-template-columns: repeat(4,1fr);
-      border: 1px solid rgba(255,255,255,0.08); border-radius: 2rem;
-      overflow: hidden; background: rgba(255,255,255,0.06);
-      gap: 1px; margin-bottom: 72px;
+    .metrics-body { position: relative; min-height: 55vh; }
+
+    /* Both groups absolute, overlapping — only one visible at a time */
+    .metrics-grid, .testimonials {
+      position: absolute; top: 0; left: 0; width: 100%;
+      display: grid; grid-template-columns: repeat(3,1fr); gap: 40px;
     }
+    .grp-hidden { opacity: 0 !important; pointer-events: none; }
+
+    /* Per-card sequential reveal (services + metrics) */
+    .svc-card, .metric-cell {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 2.4s cubic-bezier(.16,1,.3,1), transform 2.4s cubic-bezier(.16,1,.3,1);
+    }
+    .svc-card.card-in, .metric-cell.card-in {
+      opacity: 1; transform: none;
+    }
+
+    /* Metric cell — same style as process .step */
     .metric-cell {
-      background: rgba(255,255,255,0.04); padding: 48px 32px; text-align: center;
+      background: transparent; padding: 0;
+      border: none; border-radius: 0;
+      display: flex; flex-direction: column;
     }
     .metric-val {
-      font-size: 56px; font-weight: 800; letter-spacing: -3px;
-      line-height: 1; color: #fff; margin-bottom: 10px;
+      font-size: 72px; font-weight: 800; letter-spacing: -4px;
+      line-height: 1; color: #fff; margin-bottom: 12px;
       display: block;
     }
-    .metric-val .acc { color: #a190f5; }
     .metric-lbl { font-size: 14px; color: rgba(255,255,255,0.4); line-height: 1.5; }
 
-    /* Testimonials */
-    .testimonials { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
-    .tc {
-      padding: 36px; border-radius: 2rem;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.08);
-      display: flex; flex-direction: column; gap: 24px;
-      transition: border-color .25s, box-shadow .25s, transform .25s;
-    }
-    .tc:hover {
-      border-color: rgba(161,144,245,0.3);
-      box-shadow: 0 12px 40px rgba(0,0,0,0.3);
-      transform: translateY(-3px);
-    }
-    .tc-stars { color: #f59e0b; font-size: 13px; letter-spacing: 2px; }
-    .tc-quote { font-size: 15px; color: rgba(255,255,255,0.6); line-height: 1.7; flex: 1; }
-    .tc-author { display: flex; align-items: center; gap: 12px; }
-    .tc-av {
-      width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0;
-      background: linear-gradient(135deg, var(--purple-dark), var(--purple));
-      display: flex; align-items: center; justify-content: center;
-      font-size: 13px; font-weight: 700; color: #fff;
-    }
-    .tc-name { font-size: 14px; font-weight: 700; color: #fff; }
-    .tc-role { font-size: 12px; color: rgba(255,255,255,0.35); margin-top: 1px; }
+
+
 
     /* ══════════════════════════════════════
        CTA  (dark section — loanpro.io style)
     ══════════════════════════════════════ */
     #cta {
-      padding: 160px 5rem;
+      padding: clamp(100px,12vh,160px) clamp(1.25rem,5vw,5rem) clamp(160px,20vh,260px);
+      min-height: 140vh;
       background: transparent;
       position: relative; overflow: hidden;
       text-align: center;
@@ -541,14 +556,14 @@
       content: '';
       position: absolute; top: -200px; left: 50%; transform: translateX(-50%);
       width: 800px; height: 500px;
-      background: radial-gradient(ellipse, rgba(82,51,237,0.2) 0%, transparent 65%);
+      background: radial-gradient(ellipse, rgba(var(--accent-rgb),0.2) 0%, transparent 65%);
       pointer-events: none;
     }
     .cta-wrap {
       max-width: 720px; margin: 0 auto;
       position: relative; z-index: 1;
     }
-    #cta .section-eyebrow { color: rgba(161,144,245,0.8); }
+    #cta .section-eyebrow { color: var(--accent); }
     #cta h2 {
       font-size: clamp(40px, 5.5vw, 80px);
       font-weight: 500; letter-spacing: -3px; line-height: 1.04;
@@ -581,13 +596,13 @@
       color: rgba(255,255,255,0.3); text-decoration: none;
       transition: color .2s;
     }
-    .cta-contact a:hover { color: rgba(161,144,245,0.9); }
+    .cta-contact a:hover { color: var(--accent); }
 
     /* ══════════════════════════════════════
        FOOTER
     ══════════════════════════════════════ */
     footer {
-      padding: 40px 5rem;
+      padding: 40px clamp(1.25rem,5vw,5rem);
       background: rgba(255,255,255,0.03);
       border-top: 1px solid rgba(255,255,255,0.06);
     }
@@ -614,41 +629,89 @@
     ══════════════════════════════════════ */
     .reveal {
       opacity: 0;
-      transition: opacity .9s cubic-bezier(.16,1,.3,1), transform .9s cubic-bezier(.16,1,.3,1);
+      transition: opacity 3s cubic-bezier(.16,1,.3,1), transform 3s cubic-bezier(.16,1,.3,1);
     }
-    .reveal.from-bottom { transform: translateY(56px); }
-    .reveal.from-left   { transform: translateX(-56px); }
-    .reveal.from-right  { transform: translateX(56px); }
+    /* Appear from below / side / scale */
+    .reveal.from-bottom { transform: translateY(52px); }
+    .reveal.from-left   { transform: translateX(-52px); }
+    .reveal.from-right  { transform: translateX(52px); }
     .reveal.scale-up    { transform: scale(0.92); }
-    .reveal.in { opacity:1; transform: translateY(0) translateX(0) scale(1); }
-    .reveal.d1 { transition-delay: .08s; }
-    .reveal.d2 { transition-delay: .16s; }
-    .reveal.d3 { transition-delay: .24s; }
-    .reveal.d4 { transition-delay: .32s; }
-    .reveal.d5 { transition-delay: .40s; }
-    .reveal.d6 { transition-delay: .48s; }
+    /* Fully visible */
+    .reveal.in { opacity:1; transform: none; }
+    /* Exit: opposite direction, faster */
+    .reveal.out { opacity:0; transition-duration:2.2s; }
+    .reveal.from-bottom.out { transform: translateY(-36px); }
+    .reveal.from-left.out   { transform: translateX(-36px); }
+    .reveal.from-right.out  { transform: translateX(36px); }
+    .reveal.scale-up.out    { transform: scale(1.06); }
+    /* Stagger delays */
+    .reveal.d1 { transition-delay: .06s; }
+    .reveal.d2 { transition-delay: .13s; }
+    .reveal.d3 { transition-delay: .20s; }
+    .reveal.d4 { transition-delay: .27s; }
+    .reveal.d5 { transition-delay: .34s; }
+    .reveal.d6 { transition-delay: .41s; }
+    /* Sticky section content — stays centered while section scrolls */
+    .section-sticky {
+      position: sticky;
+      top: clamp(4rem, 12vh, 7rem);
+    }
+    /* Content shifts away from figure as it forms */
+    #problem .section-sticky,
+    #services .section-sticky,
+    #process .section-sticky,
+    #metrics .section-sticky {
+      padding-right: var(--content-pad-right, 0vw);
+      padding-left:  var(--content-pad-left,  0vw);
+      transition: none;
+    }
+    /* Body zones: each section uses its own shape's formT */
+    #problem  .section-body-zone, #problem  .section-body-zone.reveal.in,
+    #problem  .section-body-zone.reveal.out { opacity: max(0, calc((var(--form-t-0, 0) - 0.75) * 4)) !important; transition: none !important; }
+    #services .section-body-zone, #services .section-body-zone.reveal.in,
+    #services .section-body-zone.reveal.out { opacity: max(0, calc((var(--form-t-1, 0) - 0.75) * 4)) !important; transition: none !important; }
+    #process  .section-body-zone, #process  .section-body-zone.reveal.in,
+    #process  .section-body-zone.reveal.out { opacity: max(0, calc((var(--form-t-2, 0) - 0.75) * 4)) !important; transition: none !important; }
+    #metrics  .section-body-zone, #metrics  .section-body-zone.reveal.in,
+    #metrics  .section-body-zone.reveal.out { opacity: max(0, calc((var(--form-t-3, 0) - 0.75) * 4)) !important; transition: none !important; }
 
     /* ══════════════════════════════════════
        RESPONSIVE
     ══════════════════════════════════════ */
+
+    /* Tablet: 768px – 1100px */
     @media (max-width: 1100px) {
-      .svc-grid { grid-template-columns: repeat(2,1fr); }
-      .steps { grid-template-columns: 1fr 1fr; }
+      .steps { grid-template-columns: 1fr 1fr; gap: 24px; }
       .steps::before { display: none; }
-      .metrics-grid { grid-template-columns: 1fr 1fr; }
-      .testimonials { grid-template-columns: 1fr; }
-      .problem-wrap { grid-template-columns: 1fr; gap: 56px; }
     }
-    @media (max-width: 720px) {
-      .nav { padding: 0 1.5rem; }
+
+    /* Mobile: ≤ 767px */
+    @media (max-width: 767px) {
       .nav-links { display: none; }
-      #hero, #problem, #services, #process, #metrics, #cta { padding-left: 1.5rem; padding-right: 1.5rem; }
-      footer { padding: 28px 1.5rem; }
+      .nav-cta { font-size: 13px; padding: 9px 18px; }
+
+      #hero h1 { font-size: clamp(38px, 11vw, 64px); letter-spacing: -1.5px; }
+
       .footer-in { flex-direction: column; gap: 12px; text-align: center; }
-      .svc-grid { grid-template-columns: 1fr; gap: 16px; }
-      .steps { grid-template-columns: 1fr; }
-      .metric-val { font-size: 44px; }
-      .testimonials { grid-template-columns: 1fr; }
+      .f-links { gap: 20px; flex-wrap: wrap; justify-content: center; }
+
+      .steps { grid-template-columns: 1fr; gap: 20px; }
+      .metric-val { font-size: 36px; letter-spacing: -2px; }
+      .metric-cell { padding: 32px 16px; }
+
+      .section-title { font-size: clamp(28px, 7.5vw, 46px); letter-spacing: -1px; }
+      .hero-btns { flex-direction: column; align-items: center; }
+      .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
+
+      .svc-card-vis { width: 120px; }
+      .svc-card { flex-direction: column; }
+      .svc-card-vis { width: 100%; height: 120px; }
+      .cta-contact { gap: 24px; }
+    }
+
+    /* Small mobile: ≤ 400px */
+    @media (max-width: 400px) {
+      .nav-cta { display: none; }
     }
   </style>
 </head>
@@ -661,19 +724,17 @@
 <nav class="nav" id="nav">
   <div class="nav-inner">
     <a href="#" class="nav-logo">
-      <svg width="24" height="24" viewBox="0 0 200 200" fill="none">
-        <path d="M16 100 Q100 28 184 100 Q100 172 16 100Z" stroke="#5233ed" stroke-width="14" fill="rgba(82,51,237,0.1)"/>
-        <circle cx="100" cy="100" r="28" stroke="#5233ed" stroke-width="10"/>
-        <circle cx="100" cy="100" r="11" fill="#5233ed"/>
-      </svg>
-      Miru
+      MIRU
     </a>
     <ul class="nav-links">
-      <li><a href="#services">Servicios</a></li>
-      <li><a href="#process">Proceso</a></li>
-      <li><a href="#metrics">Resultados</a></li>
+      <li><a href="#services" data-i18n="nav.services">Services</a></li>
+      <li><a href="#process" data-i18n="nav.process">Process</a></li>
+      <li><a href="#metrics" data-i18n="nav.results">Results</a></li>
     </ul>
-    <a href="#cta" class="nav-cta">Hablar con nosotros</a>
+    <div class="nav-right">
+      <button class="lang-btn" id="lang-btn">ES</button>
+      <a href="#cta" class="nav-cta" data-i18n="nav.cta">Talk to us</a>
+    </div>
   </div>
 </nav>
 
@@ -686,27 +747,14 @@
   </div>
 
   <div class="hero-inner">
-    <div class="hero-badge reveal from-bottom">
-      <span class="badge-dot"></span>
-      Chihuahua, México · 2026
-    </div>
-    <h1 class="reveal from-bottom d1">
-      La inteligencia<br>
-      de tu empresa,<br>
-      <span class="grad-text">automatizada.</span>
-    </h1>
-    <p class="hero-sub reveal from-bottom d2">
-      Implementamos Claude en tu organización para que los procesos críticos
-      corran solos, el conocimiento no dependa de nadie y dirección
-      tome decisiones en tiempo real.
-    </p>
-    <div class="hero-btns reveal from-bottom d3">
+    <h1 class="reveal from-bottom d1" data-i18n="hero.h1">Your company's<br>intelligence,<br><span class="grad-text">automated.</span></h1>
+    <div class="hero-btns reveal from-bottom d2">
       <a href="#cta" class="btn-primary">
-        Agendar diagnóstico gratis
+        <span data-i18n="hero.btn1">Schedule free diagnosis</span>
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </a>
       <a href="#services" class="btn-secondary">
-        Ver servicios
+        <span data-i18n="hero.btn2">See services</span>
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </a>
     </div>
@@ -717,97 +765,100 @@
 <!-- MARQUEE (industries) -->
 <div id="marquee">
   <div class="marquee-track" id="mtrack">
-    <span class="marquee-item"><span class="marquee-sep"></span>Automotriz</span>
-    <span class="marquee-item"><span class="marquee-sep"></span>Manufactura</span>
-    <span class="marquee-item"><span class="marquee-sep"></span>Bienes Raíces</span>
-    <span class="marquee-item"><span class="marquee-sep"></span>Salud</span>
-    <span class="marquee-item"><span class="marquee-sep"></span>Retail</span>
-    <span class="marquee-item"><span class="marquee-sep"></span>Logística</span>
-    <span class="marquee-item"><span class="marquee-sep"></span>Servicios Profesionales</span>
-    <span class="marquee-item"><span class="marquee-sep"></span>Construcción</span>
-    <span class="marquee-item"><span class="marquee-sep"></span>Finanzas</span>
-    <span class="marquee-item"><span class="marquee-sep"></span>Tecnología</span>
-    <span class="marquee-item"><span class="marquee-sep"></span>Automotriz</span>
-    <span class="marquee-item"><span class="marquee-sep"></span>Manufactura</span>
-    <span class="marquee-item"><span class="marquee-sep"></span>Bienes Raíces</span>
-    <span class="marquee-item"><span class="marquee-sep"></span>Salud</span>
-    <span class="marquee-item"><span class="marquee-sep"></span>Retail</span>
-    <span class="marquee-item"><span class="marquee-sep"></span>Logística</span>
-    <span class="marquee-item"><span class="marquee-sep"></span>Servicios Profesionales</span>
-    <span class="marquee-item"><span class="marquee-sep"></span>Construcción</span>
-    <span class="marquee-item"><span class="marquee-sep"></span>Finanzas</span>
-    <span class="marquee-item"><span class="marquee-sep"></span>Tecnología</span>
+    <span class="marquee-item"><span class="marquee-sep"></span><span data-i18n="m.auto">Automotive</span></span>
+    <span class="marquee-item"><span class="marquee-sep"></span><span data-i18n="m.mfg">Manufacturing</span></span>
+    <span class="marquee-item"><span class="marquee-sep"></span><span data-i18n="m.re">Real Estate</span></span>
+    <span class="marquee-item"><span class="marquee-sep"></span><span data-i18n="m.health">Healthcare</span></span>
+    <span class="marquee-item"><span class="marquee-sep"></span><span data-i18n="m.retail">Retail</span></span>
+    <span class="marquee-item"><span class="marquee-sep"></span><span data-i18n="m.log">Logistics</span></span>
+    <span class="marquee-item"><span class="marquee-sep"></span><span data-i18n="m.pro">Professional Services</span></span>
+    <span class="marquee-item"><span class="marquee-sep"></span><span data-i18n="m.con">Construction</span></span>
+    <span class="marquee-item"><span class="marquee-sep"></span><span data-i18n="m.fin">Finance</span></span>
+    <span class="marquee-item"><span class="marquee-sep"></span><span data-i18n="m.tech">Technology</span></span>
+    <span class="marquee-item"><span class="marquee-sep"></span><span data-i18n="m.auto">Automotive</span></span>
+    <span class="marquee-item"><span class="marquee-sep"></span><span data-i18n="m.mfg">Manufacturing</span></span>
+    <span class="marquee-item"><span class="marquee-sep"></span><span data-i18n="m.re">Real Estate</span></span>
+    <span class="marquee-item"><span class="marquee-sep"></span><span data-i18n="m.health">Healthcare</span></span>
+    <span class="marquee-item"><span class="marquee-sep"></span><span data-i18n="m.retail">Retail</span></span>
+    <span class="marquee-item"><span class="marquee-sep"></span><span data-i18n="m.log">Logistics</span></span>
+    <span class="marquee-item"><span class="marquee-sep"></span><span data-i18n="m.pro">Professional Services</span></span>
+    <span class="marquee-item"><span class="marquee-sep"></span><span data-i18n="m.con">Construction</span></span>
+    <span class="marquee-item"><span class="marquee-sep"></span><span data-i18n="m.fin">Finance</span></span>
+    <span class="marquee-item"><span class="marquee-sep"></span><span data-i18n="m.tech">Technology</span></span>
   </div>
 </div>
 
 
 <!-- PROBLEM / CONTEXT -->
 <section id="problem">
-  <div class="problem-wrap">
-    <div>
-      <p class="section-eyebrow reveal from-left">El contexto</p>
-      <h2 class="section-title reveal from-left d1">Tu equipo ya usa IA.<br>Sin estructura.</h2>
-      <p class="section-sub reveal from-left d2">Las herramientas existen, pero sin integración real el impacto es mínimo y el riesgo, invisible.</p>
-      <div class="prob-items">
-        <div class="prob-item reveal from-left d2">
-          <span class="prob-n">01</span>
-          <div>
-            <h4>Conocimiento fragmentado</h4>
-            <p>Cada persona trabaja con su propio contexto. El saber colectivo no se acumula ni se comparte.</p>
-          </div>
-        </div>
-        <div class="prob-item reveal from-left d3">
-          <span class="prob-n">02</span>
-          <div>
-            <h4>Procesos sin automatizar</h4>
-            <p>Los procedimientos críticos dependen de personas específicas. Si alguien sale, el proceso sale con ellos.</p>
-          </div>
-        </div>
-        <div class="prob-item reveal from-left d4">
-          <span class="prob-n">03</span>
-          <div>
-            <h4>Sin control ni visibilidad</h4>
-            <p>Información sensible de la empresa circula en cuentas personales fuera del alcance de dirección.</p>
-          </div>
+  <div class="section-sticky">
+  <div class="section-hd-center reveal">
+    <p class="section-eyebrow" data-i18n="prob.eyebrow">Problem</p>
+    <h2 class="section-title" data-i18n="prob.h2">Your team already uses AI.<br>Without structure.</h2>
+  </div>
+  <div class="problem-wrap section-body-zone">
+      <p class="section-sub seq-accum" data-i18n="prob.sub">The tools exist, but without real integration the impact is minimal and the risk, invisible.</p>
+      <div class="prob-item seq-accum">
+        <span class="prob-n">01</span>
+        <div>
+          <h4 data-i18n="prob.p1h">Fragmented knowledge</h4>
+          <p data-i18n="prob.p1p">Each person works with their own context. Collective knowledge doesn't accumulate or get shared.</p>
         </div>
       </div>
-    </div>
+      <div class="prob-item seq-accum">
+        <span class="prob-n">02</span>
+        <div>
+          <h4 data-i18n="prob.p2h">Unautomated processes</h4>
+          <p data-i18n="prob.p2p">Critical procedures depend on specific people. If someone leaves, the process leaves with them.</p>
+        </div>
+      </div>
+      <div class="prob-item seq-accum">
+        <span class="prob-n">03</span>
+        <div>
+          <h4 data-i18n="prob.p3h">No control or visibility</h4>
+          <p data-i18n="prob.p3p">Sensitive company information circulates in personal accounts beyond management's reach.</p>
+        </div>
+      </div>
 
-    <div class="terminal reveal from-right d1">
+    <div class="terminal seq-reveal">
       <div class="t-bar">
         <span class="t-dot r"></span>
         <span class="t-dot y"></span>
         <span class="t-dot g"></span>
-        <span class="t-title">antes · después</span>
+        <span class="t-title" data-i18n="term.title">before · after</span>
       </div>
       <div class="t-body">
-        <div class="t-line"><span class="t-pre">—</span><span class="t-code d">sin Miru</span></div>
-        <div class="t-line"><span class="t-pre"> </span><span class="t-code">ChatGPT personal, sin contexto</span></div>
-        <div class="t-line"><span class="t-pre"> </span><span class="t-code">mismo proceso repetido cada día</span></div>
-        <div class="t-line"><span class="t-pre"> </span><span class="t-code">conocimiento en 3 personas clave</span></div>
-        <div class="t-line"><span class="t-pre"> </span><span class="t-code">reportes manuales, siempre tarde</span></div>
+        <div class="t-line"><span class="t-pre">—</span><span class="t-code d" data-i18n="term.without">without Miru</span></div>
+        <div class="t-line"><span class="t-pre"> </span><span class="t-code" data-i18n="term.l1">personal ChatGPT, no context</span></div>
+        <div class="t-line"><span class="t-pre"> </span><span class="t-code" data-i18n="term.l2">same process repeated every day</span></div>
+        <div class="t-line"><span class="t-pre"> </span><span class="t-code" data-i18n="term.l3">knowledge in 3 key people</span></div>
+        <div class="t-line"><span class="t-pre"> </span><span class="t-code" data-i18n="term.l4">manual reports, always late</span></div>
         <div class="t-sep"></div>
-        <div class="t-line"><span class="t-pre">✓</span><span class="t-code c">con Miru</span></div>
-        <div class="t-line"><span class="t-pre"> </span><span class="t-code">Claude con el ADN de tu empresa</span></div>
-        <div class="t-line"><span class="t-pre"> </span><span class="t-code">procesos que corren solos, 24/7</span></div>
-        <div class="t-line"><span class="t-pre"> </span><span class="t-code">conocimiento documentado y accesible</span></div>
-        <div class="t-line"><span class="t-pre"> </span><span class="t-code">dashboard en tiempo real para dirección</span></div>
+        <div class="t-line"><span class="t-pre">✓</span><span class="t-code c" data-i18n="term.with">with Miru</span></div>
+        <div class="t-line"><span class="t-pre"> </span><span class="t-code" data-i18n="term.l5">AI built around your company's knowledge</span></div>
+        <div class="t-line"><span class="t-pre"> </span><span class="t-code" data-i18n="term.l6">processes that run on their own, 24/7</span></div>
+        <div class="t-line"><span class="t-pre"> </span><span class="t-code" data-i18n="term.l7">knowledge documented and accessible</span></div>
+        <div class="t-line"><span class="t-pre"> </span><span class="t-code" data-i18n="term.l8">real-time dashboard for leadership</span></div>
       </div>
     </div>
   </div>
+  </div><!-- /section-sticky -->
 </section>
 
 
 <!-- SERVICES -->
 <section id="services">
+  <div class="section-sticky">
   <div class="services-hd reveal">
-    <p class="section-eyebrow">Servicios</p>
-    <h2 class="section-title">Lo que implementamos<br>en tu empresa</h2>
-    <p class="section-sub" style="margin-top:14px;">Desde el diagnóstico inicial hasta la automatización completa de operaciones.</p>
+    <p class="section-eyebrow" data-i18n="svc.eyebrow">Solutions</p>
+    <h2 class="section-title" data-i18n="svc.h2">What we implement<br>in your company</h2>
+    <p class="section-sub" style="margin-top:14px;" data-i18n="svc.sub">From initial diagnosis to complete operations automation.</p>
   </div>
 
-  <div class="svc-grid">
-    <div class="svc-card reveal d1">
+  <div class="svc-grid section-body-zone">
+    <!-- Group 1: cards 1–3 -->
+    <div class="svc-group">
+    <div class="svc-card">
       <div class="svc-card-vis">
         <!-- Diagnóstico: magnifying glass over graph -->
         <svg class="svc-icon" viewBox="0 0 88 88" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -820,15 +871,12 @@
         </svg>
       </div>
       <div class="svc-card-info">
-        <h3>Diagnóstico y Estrategia</h3>
-        <p>Mapeamos tus procesos, identificamos las oportunidades de mayor impacto y diseñamos la hoja de ruta precisa.</p>
-        <a href="#cta" class="svc-link">Ver más
-          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
-        </a>
+        <h3 data-i18n="svc.c1h">Diagnosis & Strategy</h3>
+        <p data-i18n="svc.c1p">We map your processes, identify the highest-impact opportunities, and design the precise roadmap.</p>
       </div>
     </div>
 
-    <div class="svc-card purple reveal d2">
+    <div class="svc-card purple">
       <div class="svc-card-vis">
         <!-- Conocimiento: brain / neural network -->
         <svg class="svc-icon" viewBox="0 0 88 88" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -847,15 +895,12 @@
         </svg>
       </div>
       <div class="svc-card-info">
-        <h3>Base de Conocimiento</h3>
-        <p>Capturamos el saber implícito de tu equipo y lo convertimos en contexto permanente para Claude.</p>
-        <a href="#cta" class="svc-link">Ver más
-          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
-        </a>
+        <h3 data-i18n="svc.c2h">Knowledge Base</h3>
+        <p data-i18n="svc.c2p">We capture your team's implicit knowledge and turn it into structured, AI-ready assets.</p>
       </div>
     </div>
 
-    <div class="svc-card reveal d3">
+    <div class="svc-card">
       <div class="svc-card-vis">
         <!-- Automatización: lightning bolt / gear -->
         <svg class="svc-icon" viewBox="0 0 88 88" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -872,15 +917,15 @@
         </svg>
       </div>
       <div class="svc-card-info">
-        <h3>Automatización de Procesos</h3>
-        <p>Cada tarea repetitiva se convierte en una habilidad que Claude ejecuta solo, sin intervención del equipo.</p>
-        <a href="#cta" class="svc-link">Ver más
-          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
-        </a>
+        <h3 data-i18n="svc.c3h">Process Automation</h3>
+        <p data-i18n="svc.c3p">Every repetitive task becomes an automated workflow that runs without team intervention.</p>
       </div>
     </div>
 
-    <div class="svc-card purple reveal d1">
+    </div><!-- /svc-group 1 -->
+    <!-- Group 2: cards 4–6 -->
+    <div class="svc-group grp-hidden">
+    <div class="svc-card purple">
       <div class="svc-card-vis">
         <!-- Agentes: interconnected nodes -->
         <svg class="svc-icon" viewBox="0 0 88 88" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -897,15 +942,12 @@
         </svg>
       </div>
       <div class="svc-card-info">
-        <h3>Agentes Autónomos</h3>
-        <p>Cadenas de procesos que se ejecutan proactivamente — desde atender clientes hasta generar reportes.</p>
-        <a href="#cta" class="svc-link">Ver más
-          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
-        </a>
+        <h3 data-i18n="svc.c4h">Autonomous Agents</h3>
+        <p data-i18n="svc.c4p">Process chains that run proactively — from handling customers to generating reports.</p>
       </div>
     </div>
 
-    <div class="svc-card reveal d2">
+    <div class="svc-card">
       <div class="svc-card-vis">
         <!-- Dashboard: monitor with charts -->
         <svg class="svc-icon" viewBox="0 0 88 88" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -920,15 +962,12 @@
         </svg>
       </div>
       <div class="svc-card-info">
-        <h3>Dashboard Ejecutivo</h3>
-        <p>Panel en tiempo real para que dirección vea el negocio sin depender de reportes manuales.</p>
-        <a href="#cta" class="svc-link">Ver más
-          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
-        </a>
+        <h3 data-i18n="svc.c5h">Executive Dashboard</h3>
+        <p data-i18n="svc.c5p">Real-time panel so leadership can see the business without relying on manual reports.</p>
       </div>
     </div>
 
-    <div class="svc-card purple reveal d3">
+    <div class="svc-card purple">
       <div class="svc-card-vis">
         <!-- Integraciones: puzzle / connection -->
         <svg class="svc-icon" viewBox="0 0 88 88" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -947,133 +986,100 @@
         </svg>
       </div>
       <div class="svc-card-info">
-        <h3>Integraciones</h3>
-        <p>Claude conectado con tu CRM, ERP, correo y herramientas existentes. Sin reemplazar tu stack actual.</p>
-        <a href="#cta" class="svc-link">Ver más
-          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
-        </a>
+        <h3 data-i18n="svc.c6h">Integrations</h3>
+        <p data-i18n="svc.c6p">AI connected to your CRM, ERP, email, and existing tools. Without replacing your current stack.</p>
       </div>
     </div>
+    </div><!-- /svc-group 2 -->
   </div>
+  </div><!-- /section-sticky -->
 </section>
 
 
 <!-- PROCESS -->
 <section id="process">
+  <div class="section-sticky">
   <div class="process-wrap">
     <div class="process-hd reveal">
-      <p class="section-eyebrow">Proceso</p>
-      <h2 class="section-title">Cuatro fases.<br>Resultados desde la tercera semana.</h2>
+      <p class="section-eyebrow" data-i18n="proc.eyebrow">Process</p>
+      <h2 class="section-title" data-i18n="proc.h2">Four phases.<br>Results from week three.</h2>
     </div>
-    <div class="steps">
-      <div class="step reveal d1">
+    <div class="steps section-body-zone">
+      <div class="step seq-accum">
         <div class="step-num">01</div>
-        <h3>Entender</h3>
-        <p>Evaluamos tu operación, procesos críticos y metas de negocio con el equipo.</p>
-        <span class="step-week">Semana 1–2</span>
+        <h3 data-i18n="proc.s1h">Understand</h3>
+        <p data-i18n="proc.s1p">We evaluate your operation, critical processes, and business goals with the team.</p>
+        <span class="step-week" data-i18n="proc.s1w">Week 1–2</span>
       </div>
-      <div class="step reveal d2">
+      <div class="step seq-accum">
         <div class="step-num">02</div>
-        <h3>Documentar</h3>
-        <p>Capturamos el conocimiento implícito y lo estructuramos como activos digitales duraderos.</p>
-        <span class="step-week">Semana 2–4</span>
+        <h3 data-i18n="proc.s2h">Document</h3>
+        <p data-i18n="proc.s2p">We capture implicit knowledge and structure it as lasting digital assets.</p>
+        <span class="step-week" data-i18n="proc.s2w">Week 2–4</span>
       </div>
-      <div class="step reveal d3">
+      <div class="step seq-accum">
         <div class="step-num">03</div>
-        <h3>Construir</h3>
-        <p>Desarrollamos skills, agentes y dashboards. Primera entrega funcional en producción.</p>
-        <span class="step-week">Semana 4–8</span>
+        <h3 data-i18n="proc.s3h">Build</h3>
+        <p data-i18n="proc.s3p">We develop skills, agents, and dashboards. First functional delivery in production.</p>
+        <span class="step-week" data-i18n="proc.s3w">Week 4–8</span>
       </div>
-      <div class="step reveal d4">
+      <div class="step seq-accum">
         <div class="step-num">04</div>
-        <h3>Escalar</h3>
-        <p>Desplegamos en toda la organización, capacitamos al equipo y damos soporte continuo.</p>
-        <span class="step-week">Semana 8–10</span>
+        <h3 data-i18n="proc.s4h">Scale</h3>
+        <p data-i18n="proc.s4p">We deploy across the organization, train the team, and provide ongoing support.</p>
+        <span class="step-week" data-i18n="proc.s4w">Week 8–10</span>
       </div>
     </div>
   </div>
+  </div><!-- /section-sticky -->
 </section>
 
 
 <!-- METRICS -->
 <section id="metrics">
+  <div class="section-sticky">
   <div class="metrics-wrap">
     <div class="metrics-hd reveal">
-      <p class="section-eyebrow" style="text-align:center">Resultados</p>
-      <h2 class="section-title" style="text-align:center;margin-bottom:14px">Impacto medible<br>en los primeros 90 días</h2>
-      <p class="section-sub">Métricas promedio en nuestros engagements de implementación.</p>
+      <p class="section-eyebrow" style="text-align:center" data-i18n="met.eyebrow">Results</p>
+      <h2 class="section-title" style="text-align:center;margin-bottom:14px" data-i18n="met.h2">Measurable impact<br>in the first 90 days</h2>
+      <p class="section-sub" data-i18n="met.sub">Average metrics across our implementation engagements.</p>
     </div>
 
-    <div class="metrics-grid reveal d1">
-      <div class="metric-cell">
-        <span class="metric-val" data-target="80" data-suffix="%"><span class="acc">0</span>%</span>
-        <div class="metric-lbl">reducción en tareas repetitivas</div>
-      </div>
-      <div class="metric-cell">
-        <span class="metric-val"><span class="acc" data-target="3" data-suffix="×">0</span>×</span>
-        <div class="metric-lbl">más velocidad en onboarding</div>
-      </div>
-      <div class="metric-cell">
-        <span class="metric-val">+<span class="acc" data-target="40" data-suffix="%">0</span>%</span>
-        <div class="metric-lbl">en productividad del equipo</div>
-      </div>
-      <div class="metric-cell">
-        <span class="metric-val">&lt;<span class="acc" data-target="3" data-suffix="">0</span> sem</span>
-        <div class="metric-lbl">hasta la primera automatización</div>
-      </div>
-    </div>
-
-    <div class="testimonials">
-      <div class="tc reveal d1">
-        <div class="tc-stars">★★★★★</div>
-        <p class="tc-quote">"En seis semanas Claude respondía clientes, generaba cotizaciones y actualizaba el CRM. Lo que antes tomaba horas, ahora tarda minutos."</p>
-        <div class="tc-author">
-          <div class="tc-av">GR</div>
-          <div>
-            <div class="tc-name">Gerente Regional</div>
-            <div class="tc-role">Agencia Automotriz · Chihuahua</div>
-          </div>
+    <div class="metrics-body section-body-zone">
+      <!-- Group 1: Metrics (3 items) -->
+      <div class="metrics-grid">
+        <div class="metric-cell">
+          <span class="metric-val">80%</span>
+          <div class="metric-lbl" data-i18n="met.m1">reduction in repetitive tasks</div>
         </div>
-      </div>
-      <div class="tc reveal d2">
-        <div class="tc-stars">★★★★★</div>
-        <p class="tc-quote">"El onboarding de nuevos empleados bajó de tres semanas a cuatro días. Todo el conocimiento de la empresa disponible al instante."</p>
-        <div class="tc-author">
-          <div class="tc-av">DL</div>
-          <div>
-            <div class="tc-name">Director de Operaciones</div>
-            <div class="tc-role">Manufactura · Ciudad Juárez</div>
-          </div>
+        <div class="metric-cell">
+          <span class="metric-val">3×</span>
+          <div class="metric-lbl" data-i18n="met.m2">faster onboarding</div>
         </div>
-      </div>
-      <div class="tc reveal d3">
-        <div class="tc-stars">★★★★★</div>
-        <p class="tc-quote">"Pasamos de reportes manuales que tomaban medio día a un dashboard que se actualiza solo. La visibilidad que tenemos ahora es otra categoría."</p>
-        <div class="tc-author">
-          <div class="tc-av">MV</div>
-          <div>
-            <div class="tc-name">Director General</div>
-            <div class="tc-role">Servicios Profesionales · Chihuahua</div>
-          </div>
+        <div class="metric-cell">
+          <span class="metric-val">+40%</span>
+          <div class="metric-lbl" data-i18n="met.m3">team productivity increase</div>
         </div>
       </div>
     </div>
   </div>
+  </div><!-- /section-sticky -->
 </section>
 
 
 <!-- CTA -->
 <section id="cta">
+  <div class="section-sticky">
   <div class="cta-wrap reveal">
-    <p class="section-eyebrow">Siguiente paso</p>
-    <h2>Empieza con un diagnóstico sin costo.</h2>
-    <p>Una sesión de 30 minutos para identificar dónde Claude genera mayor impacto en tu operación.</p>
+    <p class="section-eyebrow" data-i18n="cta.eyebrow">Next step</p>
+    <h2 data-i18n="cta.h2">Start with a free diagnosis.</h2>
+    <p data-i18n="cta.sub">A 30-minute session to identify where AI creates the most impact in your operation.</p>
     <div class="cta-btns">
       <a href="mailto:hola@miru.mx?subject=Diagnóstico Miru" class="btn-primary">
-        Agendar diagnóstico
+        <span data-i18n="cta.btn1">Schedule diagnosis</span>
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </a>
-      <a href="#services" class="btn-ghost-white">Ver servicios</a>
+      <a href="#services" class="btn-ghost-white" data-i18n="cta.btn2">See services</a>
     </div>
     <div class="cta-contact">
       <a href="mailto:hola@miru.mx">
@@ -1090,19 +1096,20 @@
       </a>
     </div>
   </div>
+  </div><!-- /section-sticky -->
 </section>
 
 
 <!-- FOOTER -->
 <footer>
   <div class="footer-in">
-    <span class="f-logo">Miru</span>
+    <span class="f-logo">MIRU</span>
     <ul class="f-links">
-      <li><a href="#services">Servicios</a></li>
-      <li><a href="#process">Proceso</a></li>
-      <li><a href="mailto:hola@miru.mx">Contacto</a></li>
+      <li><a href="#services" data-i18n="nav.services">Services</a></li>
+      <li><a href="#process" data-i18n="nav.process">Process</a></li>
+      <li><a href="mailto:hola@miru.mx" data-i18n="foot.contact">Contact</a></li>
     </ul>
-    <span class="f-copy">© 2026 Miru · Chihuahua, México</span>
+    <span class="f-copy" data-i18n="foot.copy">© 2026 Miru · Chihuahua, Mexico</span>
   </div>
 </footer>
 
@@ -1145,21 +1152,57 @@
   document.querySelectorAll('.reveal:not(.from-bottom):not(.from-left):not(.from-right):not(.scale-up)')
     .forEach(el => el.classList.add('from-bottom'));
 
-  // Hero elements animate in immediately
   document.querySelectorAll('#hero .reveal').forEach((el, i) => {
-    setTimeout(() => el.classList.add('in'), 100 + i * 110);
+    setTimeout(() => el.classList.add('in'), 100 + i * 200);
   });
 
-  const revealObs = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('in');
-        revealObs.unobserve(e.target);
+  const STAGGER = [
+    { parentSel: '.steps', childSel: '.step', gap: 520 },
+  ].map(g => ({
+    parent:   document.querySelector(g.parentSel),
+    children: Array.from(document.querySelectorAll(g.childSel)),
+    gap: g.gap, _vis: null, _timers: [],
+  }));
+
+  const staggerChildren = new Set(STAGGER.flatMap(g => g.children));
+  const revealEls = Array.from(document.querySelectorAll('.reveal:not(#hero .reveal)'))
+    .filter(el => !staggerChildren.has(el));
+
+  function runStagger(group, show) {
+    group._timers.forEach(clearTimeout); group._timers = [];
+    const kids = show ? group.children : [...group.children].reverse();
+    kids.forEach((child, i) => {
+      group._timers.push(setTimeout(() => {
+        if (show) { child.classList.add('in'); child.classList.remove('out'); }
+        else      { child.classList.remove('in'); child.classList.add('out'); }
+      }, i * group.gap));
+    });
+  }
+
+  function updateReveals() {
+    const vh = window.innerHeight;
+    revealEls.forEach(el => {
+      const r = el.getBoundingClientRect();
+      const mid = r.top + r.height * 0.4;
+      const noExit = !!el.closest('#cta, footer');
+      if (mid > vh * 0.12 && mid < vh * 0.90) {
+        el.classList.add('in'); el.classList.remove('out');
+      } else if (mid <= vh * 0.12 && !noExit) {
+        el.classList.remove('in'); el.classList.add('out');
+      } else if (mid > vh * 0.90) {
+        el.classList.remove('in', 'out');
       }
     });
-  }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+    STAGGER.forEach(g => {
+      if (!g.parent) return;
+      const r = g.parent.getBoundingClientRect();
+      const vis = r.top < vh * 0.82 && r.bottom > vh * 0.08;
+      if (vis !== g._vis) { g._vis = vis; runStagger(g, vis); }
+    });
+  }
 
-  document.querySelectorAll('.reveal:not(#hero .reveal)').forEach(el => revealObs.observe(el));
+  window.addEventListener('scroll', updateReveals, { passive: true });
+  updateReveals();
 
 
   /* ═══════════════════════════════════════════════════════
@@ -1196,9 +1239,9 @@
 
   /* ═══════════════════════════════════════════════════════
      HERO CANVAS — loanpro.io exact clone
-     scroll=0   : light bg (#f5f8ff), flat particle terrain at bottom
-     scroll→0.7 : particles form into a large centered sphere
-     scroll→1+  : dark bg (#07070f), sphere rotates continuously
+     scroll=0   : perspective grid terrain with wave animation
+     scroll→0.7 : grid particles converge into a centered sphere
+     scroll→1+  : dark bg, sphere rotates continuously with scroll
   ═══════════════════════════════════════════════════════ */
   (function initHeroCanvas() {
     const canvas = document.getElementById('hero-canvas');
@@ -1208,196 +1251,491 @@
     let W, H;
 
     function resize() {
-      W = window.innerWidth;
-      H = window.innerHeight;
-      canvas.width  = W * dpr;
-      canvas.height = H * dpr;
-      ctx.setTransform(1,0,0,1,0,0);
-      ctx.scale(dpr, dpr);
+      W = window.innerWidth; H = window.innerHeight;
+      canvas.width = W * dpr; canvas.height = H * dpr;
+      ctx.setTransform(1,0,0,1,0,0); ctx.scale(dpr, dpr);
     }
     resize();
     window.addEventListener('resize', resize);
 
-    // Two scroll values:
-    // scrollCapped: 0..1 for bg + formation (capped at first viewport)
-    // scrollRaw:    uncapped for continuous rotation throughout the page
-    let scrollCapped = 0, scrollRaw = 0;
+    let scrollCapped = 0, scrollRaw = 0, scrollProgress = 0;
+    let sectionProgs = [0, 0, 0, 0];
+
+    // Scroll-driven accent color (index 0 = hero purple, 1-4 = sections)
+    const SECT_COLORS = [
+      [ 82,  51, 237],  // 0: hero      — purple
+      [244,  63,  94],  // 1: problem   — rose
+      [ 16, 185, 129],  // 2: solutions — emerald
+      [245, 158,  11],  // 3: process   — amber
+      [ 56, 189, 248],  // 4: results   — sky
+    ];
+    let accentR = 82, accentG = 51, accentB = 237; // initial purple
+
+    // Rotation with inertia
+    let rotAngle     = 0;          // accumulated angle (radians)
+    let scrollVelPx  = 0;          // scroll velocity px/s with inertia
+    let lastScrollY  = window.scrollY;
+    let lastFrameMs  = performance.now();
+
+    // Precompute section absolute positions (updated on resize)
+    const SECT_IDS = ['problem', 'services', 'process', 'metrics'];
+    let sectTops = [0,0,0,0], sectScrollables = [1,1,1,1];
+    function updateSectOffsets() {
+      const ih = window.innerHeight;
+      SECT_IDS.forEach((id, i) => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        sectTops[i] = el.getBoundingClientRect().top + window.scrollY;
+        sectScrollables[i] = Math.max(1, el.scrollHeight - ih);
+      });
+    }
+    updateSectOffsets();
+    window.addEventListener('resize', updateSectOffsets);
+
+    // Sequential reveals: each section's body elements appear one by one as you scroll
+    const BODY_START = 0.10, BODY_END = 0.90;
+    let seqEls = null;
+    // Problem section elements stored separately (two-phase: accumulate → terminal)
+    let probAccumEls = null, probTermEl = null;
+    let svcGroups = null;       // [group1El, group2El] for services
+    let metricsGridEl = null;
+
+    function initSeqEls() {
+      probAccumEls = [
+        document.querySelector('#problem .section-sub'),
+        ...document.querySelectorAll('#problem .prob-item'),
+      ];
+      probTermEl = document.querySelector('#problem .terminal');
+
+      svcGroups = [...document.querySelectorAll('#services .svc-group')];
+      metricsGridEl = document.querySelector('#metrics .metrics-grid');
+
+      seqEls = [
+        null,                                                     // problem handled separately
+        null,                                                     // services handled separately
+        [...document.querySelectorAll('#process .step')],        // process — accumulate
+        null,                                                     // metrics handled separately
+      ];
+    }
+    function updateSeqReveals() {
+      // ── Problem: accumulate items, then cross-fade to terminal ──
+      if (probAccumEls && probTermEl) {
+        const p = sectionProgs[0];
+        const bodyP = p <= BODY_START ? 0 : p >= BODY_END ? 1 : (p - BODY_START) / (BODY_END - BODY_START);
+        const n = probAccumEls.length; // section-sub + 3 prob-items = 4
+        const HIDE_ITEMS = 0.68;       // all items hide at 68%
+        const SHOW_TERM  = 0.76;       // terminal appears at 76%
+        // Space item thresholds across [0 → HIDE_ITEMS*0.85] so all n items appear before hiding
+        probAccumEls.forEach((el, i) => {
+          if (!el) return;
+          const showAt = (i / n) * (HIDE_ITEMS * 0.85);
+          el.classList.toggle('seq-in', bodyP > showAt && bodyP < HIDE_ITEMS);
+        });
+        probTermEl.classList.toggle('seq-in', bodyP >= SHOW_TERM);
+      }
+
+      // ── Services: group swap + per-card sequential reveal ──
+      if (svcGroups && svcGroups.length === 2) {
+        const p = sectionProgs[1];
+        const bodyP = p <= BODY_START ? 0 : p >= BODY_END ? 1 : (p - BODY_START) / (BODY_END - BODY_START);
+        const SWITCH = 0.50;
+        const showGroup2 = bodyP >= SWITCH;
+        svcGroups[0].classList.toggle('grp-hidden', showGroup2);
+        svcGroups[1].classList.toggle('grp-hidden', !showGroup2);
+        // G1 cards appear one-by-one, then hide before group swap
+        const g1Cards = svcGroups[0].querySelectorAll('.svc-card');
+        g1Cards.forEach((card, i) => {
+          const showAt = 0.08 + i * 0.13;
+          card.classList.toggle('card-in', bodyP >= showAt && bodyP < SWITCH);
+        });
+        // G2 cards appear one-by-one after group swap
+        const g2Cards = svcGroups[1].querySelectorAll('.svc-card');
+        g2Cards.forEach((card, i) => {
+          const showAt = SWITCH + 0.08 + i * 0.13;
+          card.classList.toggle('card-in', bodyP >= showAt);
+        });
+      }
+
+      // ── Metrics: per-cell sequential reveal ──
+      if (metricsGridEl) {
+        const p = sectionProgs[3];
+        const bodyP = p <= BODY_START ? 0 : p >= BODY_END ? 1 : (p - BODY_START) / (BODY_END - BODY_START);
+        const mCells = metricsGridEl.querySelectorAll('.metric-cell');
+        mCells.forEach((cell, i) => {
+          const showAt = 0.08 + i * 0.13;
+          cell.classList.toggle('card-in', bodyP >= showAt);
+        });
+      }
+
+      if (!seqEls) return;
+      seqEls.forEach((elems, s) => {
+        if (s === 0 || !elems) return; // problem handled above
+        const p = sectionProgs[s];
+        const bodyP = p <= BODY_START ? 0 : p >= BODY_END ? 1 : (p - BODY_START) / (BODY_END - BODY_START);
+        const n = elems.length;
+        const seg = 1 / n;
+        elems.forEach((el, i) => {
+          if (!el) return;
+          if (s === 2) {
+            // Process: accumulate — once shown, stays visible
+            el.classList.toggle('seq-in', bodyP > i / n);
+          } else {
+            // Services + Metrics: one at a time with 30% dead zone between
+            const segStart = i * seg;
+            const segEnd   = segStart + seg * 0.85;
+            const inWindow = bodyP >= segStart && (i === n - 1 ? bodyP <= 1 : bodyP < segEnd);
+            el.classList.toggle('seq-in', inWindow);
+          }
+        });
+      });
+    }
+    document.addEventListener('DOMContentLoaded', initSeqEls);
+
     window.addEventListener('scroll', () => {
-      scrollRaw   = window.scrollY / window.innerHeight;
-      scrollCapped = Math.min(1, scrollRaw);
+      const sy = window.scrollY;
+      const ih = window.innerHeight;
+      scrollRaw     = sy / ih;
+      scrollCapped  = Math.min(1, scrollRaw);
+      const maxScroll = document.body.scrollHeight - ih;
+      scrollProgress = maxScroll > 0 ? sy / maxScroll : 0;
+      sectionProgs = sectTops.map((top, i) =>
+        Math.max(0, Math.min(1, (sy - top) / sectScrollables[i]))
+      );
+      updateSeqReveals();
     }, { passive: true });
 
     function lerp(a, b, t) { return a + (b - a) * t; }
     function lerpColor(a, b, t) {
-      return [
-        Math.round(lerp(a[0], b[0], t)),
-        Math.round(lerp(a[1], b[1], t)),
-        Math.round(lerp(a[2], b[2], t)),
-      ];
+      return [Math.round(lerp(a[0],b[0],t)), Math.round(lerp(a[1],b[1],t)), Math.round(lerp(a[2],b[2],t))];
     }
-    // Smooth cubic easing
-    function smoothStep(t) { return t <= 0 ? 0 : t >= 1 ? 1 : t * t * (3 - 2 * t); }
+    function smoothStep(t) { return t<=0?0:t>=1?1:t*t*(3-2*t); }
 
-    const BG_LIGHT = [245, 248, 255];
-    const BG_DARK  = [7,   7,   15];
+    const BG_LIGHT = [245,248,255], BG_DARK = [7,7,15];
 
-    // ── Build particle system ──
-    // N particles, each with:
-    //   flat position  → scattered terrain at bottom of screen
-    //   sphere position → golden spiral on unit sphere
-    const N = 750;
+    // ── Particle grid ──
+    const COLS = 54, ROWS = 34, N = COLS * ROWS; // 1836 particles
+
     const particles = [];
-
     for (let i = 0; i < N; i++) {
-      // Sphere destination (golden spiral — even distribution)
-      const th = Math.acos(1 - 2 * (i + 0.5) / N);
-      const ph = Math.PI * (1 + Math.sqrt(5)) * i;
-      const sx = Math.sin(th) * Math.cos(ph);
-      const sy = Math.sin(th) * Math.sin(ph);
-      const sz = Math.cos(th);
-
-      // Flat terrain source — spreads across the bottom half of the screen
-      const a2  = Math.random() * Math.PI * 2;
-      const r2  = Math.sqrt(Math.random());
-      const fx  = 0.5 + Math.cos(a2) * r2 * 0.52;
-      const fy  = 0.78 + Math.sin(a2) * r2 * 0.11 + Math.random() * 0.08;
-
-      particles.push({
-        sx, sy, sz,
-        fx, fy,
-        size: 0.5 + Math.random() * 1.7,
-      });
+      particles.push({ row: Math.floor(i / COLS), col: i % COLS });
     }
 
-    // ── Precompute mesh connections (each particle → 4 nearest sphere neighbors) ──
-    // Done once at init. Used to draw wireframe lines when sphere is formed.
-    const connections = [];
-    const CONN_K = 4;   // neighbors per particle
-    const distThreshold = 0.55 * 0.55;   // squared — prune far pairs
-    for (let i = 0; i < N; i++) {
-      const near = [];
-      for (let j = 0; j < N; j++) {
-        if (j <= i) continue;  // only forward pairs to avoid duplicates
-        const dx = particles[i].sx - particles[j].sx;
-        const dy = particles[i].sy - particles[j].sy;
-        const dz = particles[i].sz - particles[j].sz;
-        const d2 = dx*dx + dy*dy + dz*dz;
-        if (d2 < distThreshold) near.push({ j, d2 });
+    // ── Shape generators (all normalized ~radius 1) ──
+
+    function makeSphere(n) {
+      const pts = [];
+      for (let i = 0; i < n; i++) {
+        const th = Math.acos(1 - 2*(i+0.5)/n);
+        const ph = Math.PI*(1+Math.sqrt(5))*i;
+        pts.push({ x: Math.sin(th)*Math.cos(ph), y: Math.sin(th)*Math.sin(ph), z: Math.cos(th) });
       }
-      near.sort((a, b) => a.d2 - b.d2);
-      for (let k = 0; k < Math.min(CONN_K, near.length); k++) {
-        connections.push([i, near[k].j]);
-      }
+      return pts;
     }
 
-    // Reusable buffers
-    const drawBuf  = new Array(N);    // sorted by depth for rendering
-    const screenPos = new Array(N);   // indexed by particle id, for connections
+    function makeTorus(n) {
+      // Surface-only torus — quasi-random for even coverage
+      const pts = [];
+      const R = 0.62, r = 0.34;
+      const g1 = 1.6180339887; // golden ratio
+      const g2 = 1.3247179572; // plastic constant
+      for (let i = 0; i < n; i++) {
+        const u = (i * g1 * Math.PI * 2) % (Math.PI * 2);
+        const v = (i * g2 * Math.PI * 2) % (Math.PI * 2);
+        pts.push({
+          x: (R + r * Math.cos(v)) * Math.cos(u),
+          y: r * Math.sin(v) * 0.9,
+          z: (R + r * Math.cos(v)) * Math.sin(u)
+        });
+      }
+      return pts;
+    }
+
+    function makeCube(n) {
+      const pts = [];
+      const pf = Math.ceil(n/6), gs = Math.ceil(Math.sqrt(pf));
+      const faces = [[1,0,1,2],[2,0,1,2],[-1,0,1,2],[3,0,1,2],[0,1,0,2],[1,-1,0,2]]; // unused, rebuild
+      let idx = 0;
+      for (let face = 0; face < 6 && idx < n; face++) {
+        for (let fi = 0; fi < pf && idx < n; fi++, idx++) {
+          const u = (fi % gs) / Math.max(1,gs-1) * 2 - 1;
+          const v = Math.floor(fi/gs) / Math.max(1,gs-1) * 2 - 1;
+          let x, y, z;
+          if (face===0){ x=1;  y=u; z=v; }
+          else if(face===1){ x=-1; y=u; z=v; }
+          else if(face===2){ x=u; y=1; z=v; }
+          else if(face===3){ x=u; y=-1;z=v; }
+          else if(face===4){ x=u; y=v; z=1; }
+          else             { x=u; y=v; z=-1;}
+          pts.push({ x:x*0.72, y:y*0.72, z:z*0.72 });
+        }
+      }
+      while (pts.length < n) pts.push({ ...pts[pts.length-1] });
+      return pts;
+    }
+
+    function makeDiamond(n) {
+      // Octahedron: 8 triangular faces
+      const pts = [];
+      const verts = [[1,0,0],[-1,0,0],[0,1,0],[0,-1,0],[0,0,1],[0,0,-1]];
+      const facesDef = [
+        [0,2,4],[0,4,3],[0,3,5],[0,5,2],
+        [1,4,2],[1,2,5],[1,5,3],[1,3,4]
+      ];
+      const pf = Math.ceil(n/8);
+      const steps = Math.ceil(Math.sqrt(pf*2))+1;
+      let idx = 0;
+      for (let f = 0; f < 8 && idx < n; f++) {
+        const [a,b,c] = facesDef[f].map(vi=>verts[vi]);
+        for (let ai = 0; ai <= steps && idx < n; ai++) {
+          for (let bi = 0; bi <= steps-ai && idx < n; bi++, idx++) {
+            const s = ai/steps, tt = bi/steps, w = 1-s-tt;
+            const nx = a[0]*s+b[0]*tt+c[0]*w;
+            const ny = a[1]*s+b[1]*tt+c[1]*w;
+            const nz = a[2]*s+b[2]*tt+c[2]*w;
+            const len = Math.sqrt(nx*nx+ny*ny+nz*nz)||1;
+            pts.push({ x:nx/len*0.88, y:ny/len*0.88, z:nz/len*0.88 });
+          }
+        }
+      }
+      while (pts.length < n) pts.push({ ...pts[pts.length-1] });
+      return pts;
+    }
+
+    function makeHelix(n) {
+      const pts = [];
+      const half = Math.ceil(n/2), turns = 5;
+      for (let i = 0; i < n; i++) {
+        const si = i < half ? i : i-half;
+        const strand2 = i >= half;
+        const tt = si / (half-1);
+        const ang = tt * turns * Math.PI * 2 + (strand2 ? Math.PI : 0);
+        pts.push({ x: 0.38*Math.cos(ang), y: tt*1.7-0.85, z: 0.38*Math.sin(ang) });
+      }
+      return pts;
+    }
+
+    function makeRing(n) {
+      const pts = [];
+      const nRings = 6;
+      for (let i = 0; i < n; i++) {
+        const ri = i % nRings;
+        const ang = (i/n)*Math.PI*2*nRings + ri*0.13;
+        const r = 0.18 + (ri/(nRings-1))*0.78;
+        pts.push({ x: r*Math.cos(ang), y: 0, z: r*Math.sin(ang) });
+      }
+      return pts;
+    }
+
+    const SHAPES = [makeSphere, makeTorus, makeCube, makeHelix, makeDiamond, makeRing].map(f => f(N));
+
+    // ── Precompute connections per shape (k-nearest, limited range for speed) ──
+    function buildConns(pts, maxD2, k, range) {
+      const conns = [];
+      for (let i = 0; i < pts.length; i++) {
+        const near = [];
+        const hi = Math.min(pts.length, i+range);
+        for (let j = i+1; j < hi; j++) {
+          const dx=pts[i].x-pts[j].x, dy=pts[i].y-pts[j].y, dz=pts[i].z-pts[j].z;
+          const d2 = dx*dx+dy*dy+dz*dz;
+          if (d2 < maxD2) near.push({j,d2});
+        }
+        near.sort((a,b)=>a.d2-b.d2);
+        for (let ki=0; ki<Math.min(k,near.length); ki++) conns.push([i, near[ki].j]);
+      }
+      return conns;
+    }
+    const SHAPE_CONNS = SHAPES.map((pts, si) => {
+      const maxD2 = [0.38, 0.28, 0.22, 0.26, 0.22, 0.30][si];
+      return buildConns(pts, maxD2*maxD2, 3, 80);
+    });
+
+    // ── Mouse ──
+    let mx=0.5, my=1.0, tmx=0.5, tmy=1.0;
+    document.addEventListener('mousemove', e => {
+      tmx = e.clientX/window.innerWidth; tmy = e.clientY/window.innerHeight;
+    });
+
+    const drawBuf   = new Array(N);
+    const screenPos = new Array(N);
 
     function frame() {
-      const s  = scrollCapped;   // 0..1 for bg / formation
-      const sr = scrollRaw;      // uncapped for rotation
+      const s  = scrollCapped;
+      const sr = scrollRaw;
+      const now = performance.now();
+      const t   = now / 1000;
 
-      // ── 1. Background: #f5f8ff → #07070f over first viewport ──
+      // ── Rotation with inertia ──
+      const dt = Math.min((now - lastFrameMs) / 1000, 0.05);
+      lastFrameMs = now;
+      const curScrollY  = window.scrollY;
+      const scrollDelta = curScrollY - lastScrollY;
+      lastScrollY = curScrollY;
+      // Smooth scroll velocity toward current delta (inertia decay)
+      const rawVel  = scrollDelta / Math.max(dt, 0.001);      // px/s
+      scrollVelPx   = scrollVelPx * 0.88 + rawVel * 0.12;
+      // Base speed always on + scroll velocity boosts rotation
+      const BASE_ROT    = 0.22;                                // rad/s idle rotation
+      const scrollBoost = Math.abs(scrollVelPx) * 0.0040;     // faster scroll = faster spin
+      rotAngle += (BASE_ROT + scrollBoost) * dt;
+
+      mx = lerp(mx, tmx, 0.022); my = lerp(my, tmy, 0.022);
+
+      // Background
       const bg = lerpColor(BG_LIGHT, BG_DARK, s);
       ctx.fillStyle = `rgb(${bg[0]},${bg[1]},${bg[2]})`;
       ctx.fillRect(0, 0, W, H);
 
-      // ── 2. Sphere params ──
-      const R   = Math.min(W, H) * 0.42;   // radius: ~42% of smaller dimension
-      const cxS = W * 0.5;
-      const cyS = H * 0.50;
-
-      // Formation: flat terrain (s=0) → sphere (s≥0.7)
-      const formT = smoothStep(Math.min(1, s / 0.7));
-
-      // Rotation: continuous as you scroll through the entire page
-      const ang  = sr * Math.PI * 2.8;
-      const cosA = Math.cos(ang);
-      const sinA = Math.sin(ang);
-
-      // ── 3. Compute positions & fill draw buffer ──
-      for (let i = 0; i < N; i++) {
-        const p = particles[i];
-
-        // Rotate sphere point around Y axis
-        const rx = p.sx * cosA - p.sz * sinA;
-        const ry = p.sy;
-        const rz = p.sx * sinA + p.sz * cosA;
-
-        // Sphere → screen (slight perspective depth cue)
-        const persp = 1 + rz * 0.15;
-        const spx = cxS + rx * R * persp;
-        const spy = cyS + ry * R * persp;
-
-        // Flat terrain → screen
-        const fpx = p.fx * W;
-        const fpy = p.fy * H;
-
-        // Interpolate: flat → sphere as formT goes 0→1
-        const px = lerp(fpx, spx, formT);
-        const py = lerp(fpy, spy, formT);
-
-        drawBuf[i] = { px, py, rz, size: p.size };
-        screenPos[i] = { px, py, rz };  // keep by index for connection lookup
-      }
-
-      // Sort back→front for proper depth rendering
-      drawBuf.sort((a, b) => a.rz - b.rz);
-
-      // ── 4. Draw mesh connections (wireframe lines, only when sphere is forming) ──
-      if (formT > 0.05) {
-        const lineAlpha = formT * formT * 0.18;   // fade in as sphere forms
-        // Light bg: indigo lines; dark bg: lavender lines
-        let lr, lg, lb;
-        if (s < 0.5) { lr=75; lg=55; lb=215; }
-        else { lr=170; lg=158; lb=255; }
-
-        // Batch all lines into ONE path for GPU-friendly rendering
-        ctx.lineWidth = 0.6;
-        ctx.strokeStyle = `rgba(${lr},${lg},${lb},${lineAlpha.toFixed(3)})`;
-        ctx.beginPath();
-        for (let ci = 0; ci < connections.length; ci++) {
-          const [i, j] = connections[ci];
-          const di = screenPos[i], dj = screenPos[j];
-          ctx.moveTo(di.px, di.py);
-          ctx.lineTo(dj.px, dj.py);
+      // ── Per-section shape/formT (each section drives its own shape) ──
+      let shapeIdx = 0, formT = 0;
+      {
+        // Find active section: the one currently being scrolled (0 < prog < 1)
+        let found = -1;
+        for (let i = 0; i < 4; i++) {
+          if (sectionProgs[i] > 0 && sectionProgs[i] < 1) { found = i; break; }
         }
-        ctx.stroke();
+        // If none active, use last one that was reached
+        if (found === -1) {
+          for (let i = 3; i >= 0; i--) {
+            if (sectionProgs[i] > 0) { found = i; break; }
+          }
+        }
+        shapeIdx = found >= 0 ? found : 0;
+        const p  = (found >= 0 && sectionProgs[found] < 1) ? sectionProgs[found] : 0;
+        // Phases: 0–2% title | 2–18% forming (slow) | 18–92% full (body) | 92–100% dissolving (slow)
+        if      (p < 0.02) formT = 0;
+        else if (p < 0.18) formT = smoothStep((p - 0.02) / 0.16);
+        else if (p < 0.92) formT = 1;
+        else               formT = smoothStep(1 - (p - 0.92) / 0.08);
       }
 
-      // ── 5. Draw particles ──
+      const shapePts = SHAPES[shapeIdx];
+
+      // Figure: smaller radius when formed so it fits cleanly in its half
+      const R   = Math.min(W,H) * lerp(0.52, 0.40, formT);
+      // Alternates: even sections → figure RIGHT, odd → figure LEFT
+      const figRight = shapeIdx % 2 === 0;
+      const figSign  = figRight ? 1 : -1;
+      const cxS = W * (0.5 + figSign * 0.24 * formT), cyS = H * 0.50;
+
+      // ── Scroll-driven accent color ──
+      // Trigger: section title enters the viewport (not sectionProg which starts ~1vh later)
+      {
+        const sy_now = window.scrollY;
+        const ih_now = window.innerHeight;
+        let rawPos = 0;
+        for (let i = 0; i < 4; i++) {
+          // Color switches when section top reaches upper-half of viewport (title clearly readable)
+          const threshold = sectTops[i] - ih_now * 0.4;
+          if (sy_now >= threshold) {
+            const fadeIn = Math.min(1, (sy_now - threshold) / 250);
+            rawPos = 1 + i + fadeIn * 0.06;
+          }
+        }
+        rawPos = Math.min(rawPos, 4.999);
+        const si = Math.floor(rawPos), frac = rawPos - si;
+        const blendT = frac > 0.05 ? 1 : smoothStep(frac / 0.05);
+        const c0 = SECT_COLORS[Math.max(0, si - 1)];
+        const c1 = SECT_COLORS[Math.min(si, 4)];
+        accentR = Math.round(c0[0] + (c1[0] - c0[0]) * blendT);
+        accentG = Math.round(c0[1] + (c1[1] - c0[1]) * blendT);
+        accentB = Math.round(c0[2] + (c1[2] - c0[2]) * blendT);
+        document.documentElement.style.setProperty('--accent', `rgb(${accentR},${accentG},${accentB})`);
+        document.documentElement.style.setProperty('--accent-rgb', `${accentR},${accentG},${accentB}`);
+      }
+
+      // Expose to CSS: global formT + per-section formTs for body zones
+      document.documentElement.style.setProperty('--form-t', formT.toFixed(3));
+      for (let s = 0; s < 4; s++) {
+        document.documentElement.style.setProperty(`--form-t-${s}`, (shapeIdx === s ? formT : 0).toFixed(3));
+      }
+      const pad = (formT * 55).toFixed(1) + 'vw';
+      document.documentElement.style.setProperty('--content-pad-right', figRight  ? pad : '0vw');
+      document.documentElement.style.setProperty('--content-pad-left',  !figRight ? pad : '0vw');
+
+      const ang  = rotAngle;
+      const cosA = Math.cos(ang), sinA = Math.sin(ang);
+
+      const fieldTop = H*0.50, fieldBottom = H*1.03;
+      const mouseX = mx*W, mouseY = my*H;
+
+      for (let i = 0; i < N; i++) {
+        const p  = particles[i];
+        const sp = shapePts[i];
+
+        // Y-axis rotation applied to shape
+        const rx = sp.x*cosA - sp.z*sinA;
+        const ry = sp.y;
+        const rz = sp.x*sinA + sp.z*cosA;
+        // Ripple on shape surface — always moving like waves
+        const shapeRipple = Math.sin(sp.x*6 - sp.y*4 + sp.z*3 + t*0.28) * 0.055 * formT;
+        const Rr = R * (1 + shapeRipple);
+        const spx = cxS + rx*Rr*(1+rz*0.15);
+        const spy = cyS + ry*Rr*(1+rz*0.15);
+
+        const rowT = p.row/(ROWS-1);
+        const colT = p.col/(COLS-1);
+
+        const gy = fieldTop + (fieldBottom-fieldTop)*Math.pow(rowT, 0.72);
+        const hexShift = (p.row%2===0) ? 0 : 0.5/COLS;
+        const rowWidth = W*(1.08+rowT*0.14);
+        const gx = W*0.5 + (colT+hexShift-0.5)*rowWidth;
+
+        // Wave always present: full in field, subtle when formed
+        const waveAmp = 13*(1-formT) + 4*formT;
+        const wave    = Math.sin(colT*7 - rowT*9 + t*0.28)*waveAmp;
+
+        const baseX = gx, baseY = gy+wave;
+        const dmx = mouseX-baseX, dmy = mouseY-baseY;
+        const distM = Math.sqrt(dmx*dmx+dmy*dmy)+1;
+        const pullStr = (1-formT)*(0.05+rowT*0.20)*60;
+        const pull    = Math.min(1, 350/distM);
+        const pullX   = (dmx/distM)*pull*pullStr;
+        const pullY   = (dmy/distM)*pull*pullStr;
+
+        let px = lerp(baseX+pullX, spx, formT);
+        let py = lerp(baseY+pullY, spy, formT);
+
+        // End-of-page scatter: particles flee to the sides
+        const endT = smoothStep(Math.max(0, (scrollProgress - 0.80) / 0.20));
+        if (endT > 0) {
+          const side  = (colT - 0.5);                         // -0.5..0.5
+          const vScat = Math.sin(i * 1.7 + 3.14) * 0.4;      // deterministic vertical scatter
+          px += side  * W * 2.8 * endT;
+          py += vScat * H * 0.5 * endT;
+        }
+
+        const waveSize = 0.18 + rowT*rowT*3.5;
+        const pSize = lerp(waveSize, 2.8, formT);
+        drawBuf[i]   = { px, py, rz, rowT, size: pSize, endT };
+        screenPos[i] = { px, py, rz };
+      }
+
+      drawBuf.sort((a,b) => a.rz-b.rz);
+
+
+      // ── Draw particles ──
       for (let i = 0; i < N; i++) {
         const d     = drawBuf[i];
-        const depth = (d.rz + 1) * 0.5;   // 0 = back, 1 = front
+        const depth = (d.rz+1)*0.5;
 
-        // Alpha: depth-based in sphere state, flatter on terrain
-        const sphereA = 0.04 + depth * 0.82;
-        const flatA   = 0.18 + Math.random() * 0.05;   // slight sparkle
-        const alpha   = lerp(flatA, sphereA, formT);
+        const flatAlpha   = 0.06+d.rowT*d.rowT*0.70;
+        const shapeAlpha  = 0.04+depth*0.85;
+        const alpha = lerp(flatAlpha, shapeAlpha, formT) * (1 - d.endT);
 
-        // Dot radius
-        const dotR = d.size * lerp(0.65, 0.35 + depth * 0.78, formT);
+        const dotR = d.size * lerp(1.0, 0.28+depth*0.82, formT);
 
-        // Color:
-        //   s=0   → dark indigo particles on light bg
-        //   s=0.5 → transition
-        //   s=1   → lavender/white particles on dark bg
-        let r, g, b;
-        if (s < 0.5) {
-          const t2 = s * 2;
-          r = Math.round(lerp(75,  155, t2));
-          g = Math.round(lerp(55,  130, t2));
-          b = Math.round(lerp(215, 245, t2));
-        } else {
-          const t2 = (s - 0.5) * 2;
-          r = Math.round(lerp(155, 195, t2));
-          g = Math.round(lerp(130, 180, t2));
-          b = Math.round(lerp(245, 255, t2));
-        }
+        // Wave base color (blue-ish field)
+        let wr, wg, wb;
+        if (s < 0.5) { const t2=s*2; wr=Math.round(lerp(75,155,t2)); wg=Math.round(lerp(55,130,t2)); wb=Math.round(lerp(215,245,t2)); }
+        else { const t2=(s-0.5)*2; wr=Math.round(lerp(155,195,t2)); wg=Math.round(lerp(130,180,t2)); wb=Math.round(lerp(245,255,t2)); }
+        // Shape color: accent with depth variation
+        const df = 0.45 + depth * 0.55;
+        let r = Math.round(lerp(wr, Math.min(255, accentR * df), formT));
+        let g = Math.round(lerp(wg, Math.min(255, accentG * df), formT));
+        let b = Math.round(lerp(wb, Math.min(255, accentB * df), formT));
 
         ctx.beginPath();
-        ctx.arc(d.px, d.py, Math.max(0.35, dotR), 0, Math.PI * 2);
+        ctx.arc(d.px, d.py, Math.max(0.3, dotR), 0, Math.PI*2);
         ctx.fillStyle = `rgba(${r},${g},${b},${alpha.toFixed(3)})`;
         ctx.fill();
       }
@@ -1408,7 +1746,104 @@
   })();
 
 
-  // Service card icons animate on hover via CSS — no extra JS needed
+  // ─── i18n ───────────────────────────────────────────────────
+  const T = {
+    en: {
+      'nav.services':'Services','nav.process':'Process','nav.results':'Results','nav.cta':'Talk to us',
+      'hero.h1':'Your company\'s<br>intelligence,<br><span class="grad-text">automated.</span>',
+      'hero.btn1':'Schedule free diagnosis','hero.btn2':'See services',
+      'm.auto':'Automotive','m.mfg':'Manufacturing','m.re':'Real Estate','m.health':'Healthcare',
+      'm.retail':'Retail','m.log':'Logistics','m.pro':'Professional Services',
+      'm.con':'Construction','m.fin':'Finance','m.tech':'Technology',
+      'prob.eyebrow':'Problem',
+      'prob.h2':'Your team already uses AI.<br>Without structure.',
+      'prob.sub':'The tools exist, but without real integration the impact is minimal and the risk, invisible.',
+      'prob.p1h':'Fragmented knowledge','prob.p1p':'Each person works with their own context. Collective knowledge doesn\'t accumulate or get shared.',
+      'prob.p2h':'Unautomated processes','prob.p2p':'Critical procedures depend on specific people. If someone leaves, the process leaves with them.',
+      'prob.p3h':'No control or visibility','prob.p3p':'Sensitive company information circulates in personal accounts beyond management\'s reach.',
+      'term.title':'before · after','term.without':'without Miru','term.with':'with Miru',
+      'term.l1':'personal ChatGPT, no context','term.l2':'same process repeated every day',
+      'term.l3':'knowledge in 3 key people','term.l4':'manual reports, always late',
+      'term.l5':'AI built around your company\'s knowledge','term.l6':'processes that run on their own, 24/7',
+      'term.l7':'knowledge documented and accessible','term.l8':'real-time dashboard for leadership',
+      'svc.eyebrow':'Solutions','svc.h2':'What we implement<br>in your company',
+      'svc.sub':'From initial diagnosis to complete operations automation.','svc.more':'Learn more',
+      'svc.c1h':'Diagnosis & Strategy','svc.c1p':'We map your processes, identify the highest-impact opportunities, and design the precise roadmap.',
+      'svc.c2h':'Knowledge Base','svc.c2p':'We capture your team\'s implicit knowledge and turn it into structured, AI-ready assets.',
+      'svc.c3h':'Process Automation','svc.c3p':'Every repetitive task becomes an automated workflow that runs without team intervention.',
+      'svc.c4h':'Autonomous Agents','svc.c4p':'Process chains that run proactively — from handling customers to generating reports.',
+      'svc.c5h':'Executive Dashboard','svc.c5p':'Real-time panel so leadership can see the business without relying on manual reports.',
+      'svc.c6h':'Integrations','svc.c6p':'AI connected to your CRM, ERP, email, and existing tools. Without replacing your current stack.',
+      'proc.eyebrow':'Process','proc.h2':'Four phases.<br>Results from week three.',
+      'proc.s1h':'Understand','proc.s1p':'We evaluate your operation, critical processes, and business goals with the team.','proc.s1w':'Week 1–2',
+      'proc.s2h':'Document','proc.s2p':'We capture implicit knowledge and structure it as lasting digital assets.','proc.s2w':'Week 2–4',
+      'proc.s3h':'Build','proc.s3p':'We develop skills, agents, and dashboards. First functional delivery in production.','proc.s3w':'Week 4–8',
+      'proc.s4h':'Scale','proc.s4p':'We deploy across the organization, train the team, and provide ongoing support.','proc.s4w':'Week 8–10',
+      'met.eyebrow':'Results','met.h2':'Measurable impact<br>in the first 90 days',
+      'met.sub':'Average metrics across our implementation engagements.',
+      'met.m1':'reduction in repetitive tasks','met.m2':'faster onboarding',
+      'met.m3':'team productivity increase','met.m4':'to first automation','met.wk':'wks',
+      'cta.eyebrow':'Next step','cta.h2':'Start with a free diagnosis.',
+      'cta.sub':'A 30-minute session to identify where AI creates the most impact in your operation.',
+      'cta.btn1':'Schedule diagnosis','cta.btn2':'See services',
+      'foot.contact':'Contact','foot.copy':'© 2026 Miru · Chihuahua, Mexico',
+    },
+    es: {
+      'nav.services':'Servicios','nav.process':'Proceso','nav.results':'Resultados','nav.cta':'Hablar con nosotros',
+      'hero.h1':'La inteligencia<br>de tu empresa,<br><span class="grad-text">automatizada.</span>',
+      'hero.btn1':'Agendar diagnóstico gratis','hero.btn2':'Ver servicios',
+      'm.auto':'Automotriz','m.mfg':'Manufactura','m.re':'Bienes Raíces','m.health':'Salud',
+      'm.retail':'Retail','m.log':'Logística','m.pro':'Servicios Profesionales',
+      'm.con':'Construcción','m.fin':'Finanzas','m.tech':'Tecnología',
+      'prob.eyebrow':'Problema',
+      'prob.h2':'Tu equipo ya usa IA.<br>Sin estructura.',
+      'prob.sub':'Las herramientas existen, pero sin integración real el impacto es mínimo y el riesgo, invisible.',
+      'prob.p1h':'Conocimiento fragmentado','prob.p1p':'Cada persona trabaja con su propio contexto. El saber colectivo no se acumula ni se comparte.',
+      'prob.p2h':'Procesos sin automatizar','prob.p2p':'Los procedimientos críticos dependen de personas específicas. Si alguien sale, el proceso sale con ellos.',
+      'prob.p3h':'Sin control ni visibilidad','prob.p3p':'Información sensible de la empresa circula en cuentas personales fuera del alcance de dirección.',
+      'term.title':'antes · después','term.without':'sin Miru','term.with':'con Miru',
+      'term.l1':'ChatGPT personal, sin contexto','term.l2':'mismo proceso repetido cada día',
+      'term.l3':'conocimiento en 3 personas clave','term.l4':'reportes manuales, siempre tarde',
+      'term.l5':'IA construida con el conocimiento de tu empresa','term.l6':'procesos que corren solos, 24/7',
+      'term.l7':'conocimiento documentado y accesible','term.l8':'dashboard en tiempo real para dirección',
+      'svc.eyebrow':'Soluciones','svc.h2':'Lo que implementamos<br>en tu empresa',
+      'svc.sub':'Desde el diagnóstico inicial hasta la automatización completa de operaciones.','svc.more':'Ver más',
+      'svc.c1h':'Diagnóstico y Estrategia','svc.c1p':'Mapeamos tus procesos, identificamos las oportunidades de mayor impacto y diseñamos la hoja de ruta precisa.',
+      'svc.c2h':'Base de Conocimiento','svc.c2p':'Capturamos el saber implícito de tu equipo y lo convertimos en activos estructurados, listos para IA.',
+      'svc.c3h':'Automatización de Procesos','svc.c3p':'Cada tarea repetitiva se convierte en un flujo automatizado que corre sin intervención del equipo.',
+      'svc.c4h':'Agentes Autónomos','svc.c4p':'Cadenas de procesos que se ejecutan proactivamente — desde atender clientes hasta generar reportes.',
+      'svc.c5h':'Dashboard Ejecutivo','svc.c5p':'Panel en tiempo real para que dirección vea el negocio sin depender de reportes manuales.',
+      'svc.c6h':'Integraciones','svc.c6p':'IA conectada con tu CRM, ERP, correo y herramientas existentes. Sin reemplazar tu stack actual.',
+      'proc.eyebrow':'Proceso','proc.h2':'Cuatro fases.<br>Resultados desde la tercera semana.',
+      'proc.s1h':'Entender','proc.s1p':'Evaluamos tu operación, procesos críticos y metas de negocio con el equipo.','proc.s1w':'Semana 1–2',
+      'proc.s2h':'Documentar','proc.s2p':'Capturamos el conocimiento implícito y lo estructuramos como activos digitales duraderos.','proc.s2w':'Semana 2–4',
+      'proc.s3h':'Construir','proc.s3p':'Desarrollamos skills, agentes y dashboards. Primera entrega funcional en producción.','proc.s3w':'Semana 4–8',
+      'proc.s4h':'Escalar','proc.s4p':'Desplegamos en toda la organización, capacitamos al equipo y damos soporte continuo.','proc.s4w':'Semana 8–10',
+      'met.eyebrow':'Resultados','met.h2':'Impacto medible<br>en los primeros 90 días',
+      'met.sub':'Métricas promedio en nuestros engagements de implementación.',
+      'met.m1':'reducción en tareas repetitivas','met.m2':'más velocidad en onboarding',
+      'met.m3':'en productividad del equipo','met.m4':'hasta la primera automatización','met.wk':'sem',
+      'cta.eyebrow':'Siguiente paso','cta.h2':'Empieza con un diagnóstico sin costo.',
+      'cta.sub':'Una sesión de 30 minutos para identificar dónde la IA genera mayor impacto en tu operación.',
+      'cta.btn1':'Agendar diagnóstico','cta.btn2':'Ver servicios',
+      'foot.contact':'Contacto','foot.copy':'© 2026 Miru · Chihuahua, México',
+    }
+  };
+
+  let currentLang = 'en';
+  function applyLang(lang) {
+    currentLang = lang;
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const val = T[lang][el.dataset.i18n];
+      if (val !== undefined) el.innerHTML = val;
+    });
+    const btn = document.getElementById('lang-btn');
+    btn.textContent = lang === 'en' ? 'ES' : 'EN';
+  }
+  document.getElementById('lang-btn').addEventListener('click', () => {
+    applyLang(currentLang === 'en' ? 'es' : 'en');
+  });
+  applyLang('en');
 
 </script>
 
