@@ -1674,10 +1674,12 @@
 
       // Figure: smaller radius when formed so it fits cleanly in its half
       const R   = Math.min(W,H) * lerp(0.52, 0.40, formT);
+      const isMobile = window.innerWidth < 768;
       // Alternates: even sections → figure RIGHT, odd → figure LEFT
       const figRight = shapeIdx % 2 === 0;
       const figSign  = figRight ? 1 : -1;
-      const cxS = W * (0.5 + figSign * 0.24 * formT), cyS = H * 0.50;
+      const figShift = isMobile ? 0 : figSign * 0.24 * formT;
+      const cxS = W * (0.5 + figShift), cyS = H * 0.50;
 
       // ── Scroll-driven accent color ──
       // Trigger: section title enters the viewport (not sectionProg which starts ~1vh later)
@@ -1710,7 +1712,6 @@
       for (let s = 0; s < 4; s++) {
         document.documentElement.style.setProperty(`--form-t-${s}`, (shapeIdx === s ? formT : 0).toFixed(3));
       }
-      const isMobile = window.innerWidth < 768;
       const pad = isMobile ? '0vw' : (formT * 55).toFixed(1) + 'vw';
       document.documentElement.style.setProperty('--content-pad-right', (!isMobile && figRight)  ? pad : '0vw');
       document.documentElement.style.setProperty('--content-pad-left',  (!isMobile && !figRight) ? pad : '0vw');
