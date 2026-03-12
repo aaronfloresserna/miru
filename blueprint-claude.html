@@ -55,16 +55,8 @@
       padding: 0 5rem;
       height: 72px;
       display: flex; align-items: center;
-      background: rgba(7,7,15,0.3);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-      transition: transform .4s cubic-bezier(.16,1,.3,1), background .3s;
-    }
-    .nav.hidden { transform: translateY(calc(-100% - 3rem)); }
-    .nav.scrolled {
-      background: rgba(7,7,15,0.75);
-      border-bottom-color: rgba(255,255,255,0.08);
+      background: transparent;
+      border: none;
     }
     .nav-inner {
       max-width: 1280px; width: 100%; margin: 0 auto;
@@ -73,16 +65,18 @@
     .nav-logo {
       display: flex; align-items: center; gap: 10px;
       font-size: 19px; font-weight: 800; letter-spacing: -0.5px;
-      color: #fff; text-decoration: none;
+      color: var(--nav-color, #27313f); text-decoration: none;
+      transition: color .35s ease;
     }
     .nav-links {
       display: flex; align-items: center; gap: 40px; list-style: none;
     }
     .nav-links a {
-      font-size: 14px; font-weight: 500; color: rgba(255,255,255,0.55);
+      font-size: 14px; font-weight: 500;
+      color: var(--nav-color-muted, rgba(39,49,63,0.55));
       text-decoration: none; transition: color .2s;
     }
-    .nav-links a:hover { color: #fff; }
+    .nav-links a:hover { color: var(--nav-color, #27313f); }
     .nav-cta {
       font-size: 14px; font-weight: 700;
       color: #fff; background: var(--purple);
@@ -1119,25 +1113,25 @@
   ═══════════════════════════════════════════════════════ */
   const nav = document.getElementById('nav');
   const progressBar = document.getElementById('progress-bar');
-  let lastScrollY = 0;
 
   function onScroll() {
-    const sy = window.scrollY;
-    const max = document.body.scrollHeight - window.innerHeight;
+    const sy   = window.scrollY;
+    const max  = document.body.scrollHeight - window.innerHeight;
+    const s    = Math.min(1, sy / window.innerHeight);  // 0..1 matches canvas scrollCapped
 
     // Progress bar
     progressBar.style.width = (sy / max * 100) + '%';
 
-    // Nav: hide on scroll down, show on scroll up (loanpro.io style)
-    if (sy > lastScrollY && sy > 80) {
-      nav.classList.add('hidden');
-    } else {
-      nav.classList.remove('hidden');
-    }
-    nav.classList.toggle('scrolled', sy > 40);
-    lastScrollY = sy;
+    // Nav text color: smooth lerp dark→white matching the canvas bg transition
+    // s=0: dark text on light bg; s=1: white text on dark bg
+    const r = Math.round(39  + (255 - 39)  * s);
+    const g = Math.round(49  + (255 - 49)  * s);
+    const b = Math.round(63  + (255 - 63)  * s);
+    nav.style.setProperty('--nav-color',       `rgb(${r},${g},${b})`);
+    nav.style.setProperty('--nav-color-muted', `rgba(${r},${g},${b},${(0.55 + s * 0.1).toFixed(2)})`);
   }
   window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll(); // init on load
 
 
   /* ═══════════════════════════════════════════════════════
