@@ -683,35 +683,93 @@
     @media (max-width: 1100px) {
       .steps { grid-template-columns: 1fr 1fr; gap: 24px; }
       .steps::before { display: none; }
+      .svc-group, .metrics-grid { grid-template-columns: 1fr 1fr; gap: 28px; }
     }
 
     /* Mobile: ≤ 767px */
     @media (max-width: 767px) {
+      /* ── Nav ── */
+      .nav-inner { grid-template-columns: 1fr auto; }
       .nav-links { display: none; }
-      .nav-cta { font-size: 13px; padding: 9px 18px; }
+      .nav-cta { font-size: 12px; padding: 8px 16px; }
+      .lang-btn { font-size: 11px; padding: 5px 10px; }
 
-      #hero h1 { font-size: clamp(38px, 11vw, 64px); letter-spacing: -1.5px; }
+      /* ── Hero ── */
+      #hero { padding: 0 clamp(1rem, 5vw, 2rem); }
+      #hero h1 { font-size: clamp(34px, 10vw, 54px); letter-spacing: -1.5px; }
+      .hero-badge { font-size: 10px; padding: 5px 14px; }
+      .hero-sub { font-size: 15px; }
+      .hero-btns { flex-direction: column; align-items: stretch; gap: 12px; }
+      .btn-primary, .btn-secondary { width: 100%; justify-content: center; padding: 15px 20px; font-size: 14px; }
 
-      .footer-in { flex-direction: column; gap: 12px; text-align: center; }
-      .f-links { gap: 20px; flex-wrap: wrap; justify-content: center; }
+      /* ── Sections ── */
+      #problem, #services, #process, #metrics {
+        min-height: 320vh;
+        padding: clamp(56px,8vh,90px) clamp(1rem,5vw,1.75rem) clamp(80px,10vh,120px);
+      }
+      .section-sticky { top: clamp(2rem, 6vh, 4rem); }
+      .section-title { font-size: clamp(26px, 7.5vw, 42px); letter-spacing: -1px; line-height: 1.1; }
+      .section-sub { font-size: 14px; }
+      .section-hd-center { margin-bottom: clamp(1.5rem, 4vh, 2.5rem); }
 
-      .steps { grid-template-columns: 1fr; gap: 20px; }
-      .metric-val { font-size: 36px; letter-spacing: -2px; }
-      .metric-cell { padding: 32px 16px; }
+      /* ── No horizontal figure shift on mobile ── */
+      #problem .section-sticky,
+      #services .section-sticky,
+      #process .section-sticky,
+      #metrics .section-sticky {
+        padding-right: 0 !important;
+        padding-left:  0 !important;
+      }
 
-      .section-title { font-size: clamp(28px, 7.5vw, 46px); letter-spacing: -1px; }
-      .hero-btns { flex-direction: column; align-items: center; }
-      .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
+      /* ── Problem section ── */
+      .prob-item { gap: 14px; padding: 18px 0; }
+      .prob-icon { width: 36px; height: 36px; font-size: 16px; }
+      .prob-item h3 { font-size: 15px; }
+      .prob-item p  { font-size: 13px; }
+      .terminal { padding: 20px 16px; font-size: 12px; }
 
-      .svc-card-vis { width: 120px; }
-      .svc-card { flex-direction: column; }
-      .svc-card-vis { width: 100%; height: 120px; }
-      .cta-contact { gap: 24px; }
+      /* ── Services ── */
+      .services-hd { margin-bottom: 48px; }
+      .svc-grid { min-height: 80vh; }
+      .svc-group, .metrics-grid { grid-template-columns: 1fr; gap: 36px; }
+      .svc-card h3 { font-size: 15px; }
+      .svc-card p  { font-size: 13px; }
+
+      /* ── Process ── */
+      .process-hd { margin-bottom: 48px; }
+      .steps { grid-template-columns: 1fr; gap: 28px; }
+      .steps::before { display: none; }
+      .step h3 { font-size: 15px; }
+      .step p  { font-size: 13px; }
+
+      /* ── Metrics ── */
+      .metrics-hd { margin-bottom: 48px; }
+      .metrics-body { min-height: 80vh; }
+      .metric-val { font-size: 52px; letter-spacing: -3px; }
+      .metric-label { font-size: 13px; }
+
+      /* ── CTA ── */
+      #cta { padding: clamp(60px,8vh,100px) clamp(1rem,5vw,1.75rem); }
+      #cta h2 { font-size: clamp(30px, 8vw, 52px); letter-spacing: -2px; }
+      #cta p  { font-size: 15px; }
+      .cta-btns { flex-direction: column; align-items: stretch; gap: 12px; }
+      .cta-contact { flex-direction: column; gap: 16px; align-items: flex-start; }
+
+      /* ── Footer ── */
+      .footer-in { flex-direction: column; gap: 16px; text-align: center; }
+      .f-links { gap: 16px; flex-wrap: wrap; justify-content: center; }
+      .f-copy { font-size: 11px; }
+
+      /* ── Marquee ── */
+      .marquee-track { gap: 32px; }
+      .marquee-item { font-size: 11px; }
     }
 
     /* Small mobile: ≤ 400px */
     @media (max-width: 400px) {
       .nav-cta { display: none; }
+      .nav-inner { grid-template-columns: 1fr auto; }
+      .lang-btn { margin-right: 0; }
     }
   </style>
 </head>
