@@ -55,9 +55,7 @@
       padding: 0 5rem;
       height: 72px;
       display: flex; align-items: center;
-      background: transparent;
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
+      background: rgb(245,248,255);
       border: none;
     }
     .nav-inner {
@@ -1124,13 +1122,18 @@
     // Progress bar
     progressBar.style.width = (sy / max * 100) + '%';
 
-    // Nav text color: smooth lerp dark→white matching the canvas bg transition
-    // s=0: dark text on light bg; s=1: white text on dark bg
+    // Nav background: exact same lerp as canvas (BG_LIGHT → BG_DARK)
+    const bgR = Math.round(245 + (7   - 245) * s);
+    const bgG = Math.round(248 + (7   - 248) * s);
+    const bgB = Math.round(255 + (15  - 255) * s);
+    nav.style.background = `rgb(${bgR},${bgG},${bgB})`;
+
+    // Nav text color: dark on light bg → white on dark bg
     const r = Math.round(39  + (255 - 39)  * s);
     const g = Math.round(49  + (255 - 49)  * s);
     const b = Math.round(63  + (255 - 63)  * s);
     nav.style.setProperty('--nav-color',       `rgb(${r},${g},${b})`);
-    nav.style.setProperty('--nav-color-muted', `rgba(${r},${g},${b},${(0.55 + s * 0.1).toFixed(2)})`);
+    nav.style.setProperty('--nav-color-muted', `rgba(${r},${g},${b},0.55)`);
   }
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll(); // init on load
