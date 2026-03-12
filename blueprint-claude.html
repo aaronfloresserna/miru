@@ -1,0 +1,1417 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Miru — Inteligencia Artificial para tu Empresa</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:          #f5f8ff;
+      --purple:      #5233ed;
+      --purple-dark: #3022bb;
+      --purple-deep: #171768;
+      --text:        #27313f;
+      --text-light:  #b8bfd1;
+      --border:      #dee4ef;
+      --border-2:    #ededed;
+      --card:        #fff;
+      --card-alt:    #f2f5fe;
+      --footer:      #09090a;
+      --lavender:    #dce6ff;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Manrope', sans-serif;
+      background: #07070f;   /* dark base — canvas covers everything */
+      color: #fff;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    ::selection { background: rgba(161,144,245,0.3); }
+
+    /* ══════════════════════════════════════
+       SCROLL PROGRESS
+    ══════════════════════════════════════ */
+    #progress-bar {
+      position: fixed; top: 0; left: 0; z-index: 999;
+      height: 2px; width: 0%;
+      background: linear-gradient(90deg, var(--purple-dark), var(--purple), #a190f5);
+      transition: width .05s linear;
+      pointer-events: none;
+    }
+
+    /* ══════════════════════════════════════
+       NAV  (loanpro.io style — frosted glass, hides on scroll down)
+    ══════════════════════════════════════ */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+      padding: 0 5rem;
+      height: 72px;
+      display: flex; align-items: center;
+      background: rgba(7,7,15,0.3);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      transition: transform .4s cubic-bezier(.16,1,.3,1), background .3s;
+    }
+    .nav.hidden { transform: translateY(calc(-100% - 3rem)); }
+    .nav.scrolled {
+      background: rgba(7,7,15,0.75);
+      border-bottom-color: rgba(255,255,255,0.08);
+    }
+    .nav-inner {
+      max-width: 1280px; width: 100%; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 19px; font-weight: 800; letter-spacing: -0.5px;
+      color: #fff; text-decoration: none;
+    }
+    .nav-links {
+      display: flex; align-items: center; gap: 40px; list-style: none;
+    }
+    .nav-links a {
+      font-size: 14px; font-weight: 500; color: rgba(255,255,255,0.55);
+      text-decoration: none; transition: color .2s;
+    }
+    .nav-links a:hover { color: #fff; }
+    .nav-cta {
+      font-size: 14px; font-weight: 700;
+      color: #fff; background: var(--purple);
+      padding: 11px 26px; border-radius: 10rem;
+      text-decoration: none; letter-spacing: -0.2px;
+      transition: background .2s, transform .2s, box-shadow .2s;
+      overflow: hidden; position: relative;
+    }
+    .nav-cta:hover {
+      background: var(--purple-dark);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(82,51,237,0.35);
+    }
+
+    /* ══════════════════════════════════════
+       HERO  (full viewport, light background, huge text)
+    ══════════════════════════════════════ */
+    #hero {
+      min-height: 100vh;
+      background: transparent;
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center;
+      padding: 140px 5rem 80px;
+      position: relative;
+      text-align: center;
+      z-index: 1;
+    }
+
+    /* Hero text — dark on light bg at top, readable throughout */
+    #hero h1 { color: var(--text); }
+    .hero-badge {
+      background: rgba(82,51,237,0.08);
+      border-color: rgba(82,51,237,0.2);
+      color: var(--purple);
+    }
+    .badge-dot { background: var(--purple); }
+    .hero-sub { color: var(--text-light); }
+
+    /* Sections after hero sit on top of the fixed canvas */
+    #marquee, #problem, #services, #process, #metrics, #cta, footer {
+      position: relative; z-index: 2;
+    }
+
+    /* Full-viewport canvas background — fixed like loanpro.io */
+    .hero-scene {
+      position: fixed; inset: 0;
+      width: 100vw; height: 100vh;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .hero-scene canvas {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+    }
+    /* Veil — removed, canvas handles all bg */
+    .hero-scene-veil { display: none; }
+
+    .hero-inner {
+      max-width: 960px; width: 100%;
+      position: relative; z-index: 1;
+    }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(82,51,237,0.08);
+      border: 1px solid rgba(82,51,237,0.18);
+      border-radius: 10rem;
+      padding: 6px 18px;
+      font-size: 12px; font-weight: 700;
+      color: var(--purple); letter-spacing: .5px;
+      text-transform: uppercase;
+      margin-bottom: 32px;
+    }
+    .badge-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--purple);
+      box-shadow: 0 0 8px rgba(82,51,237,0.6);
+      animation: pulse-dot 2.2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%,100% { opacity:1; transform:scale(1); }
+      50%      { opacity:.4; transform:scale(1.5); }
+    }
+
+    #hero h1 {
+      font-size: clamp(52px, 7vw, 112px);
+      font-weight: 500;
+      line-height: 1.06;
+      letter-spacing: -3px;
+      color: var(--text);
+      margin-bottom: 28px;
+    }
+
+    /* Gradient shimmer text — cycles through purple tones */
+    .grad-text {
+      background: linear-gradient(90deg,
+        #5233ed 0%,
+        #a190f5 20%,
+        #3022bb 35%,
+        #c084fc 50%,
+        #5233ed 65%,
+        #818cf8 80%,
+        #5233ed 100%
+      );
+      background-size: 300% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: grad-shift 5s linear infinite;
+    }
+    @keyframes grad-shift {
+      0%   { background-position: 0% center; }
+      100% { background-position: 300% center; }
+    }
+
+    .hero-sub {
+      font-size: 18px; font-weight: 400;
+      color: var(--text-light);
+      line-height: 1.7; max-width: 600px;
+      margin: 0 auto 48px;
+    }
+
+    .hero-btns {
+      display: flex; gap: 16px; justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--purple);
+      color: #fff; font-size: 15px; font-weight: 700;
+      padding: 17px 36px; border-radius: 10rem;
+      text-decoration: none; letter-spacing: -0.2px;
+      position: relative; overflow: hidden;
+      transition: background .5s cubic-bezier(0.16,1,0.3,1), box-shadow .2s, transform .2s;
+    }
+    .btn-primary:hover {
+      background: var(--purple-dark);
+      box-shadow: 0 8px 28px rgba(82,51,237,0.4);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: transparent;
+      color: var(--text); font-size: 15px; font-weight: 600;
+      padding: 17px 36px; border-radius: 10rem;
+      border: 1px solid var(--border);
+      text-decoration: none;
+      transition: border-color .2s, background .2s;
+    }
+    .btn-secondary:hover {
+      border-color: var(--purple);
+      background: rgba(82,51,237,0.04);
+    }
+
+    /* ══════════════════════════════════════
+       MARQUEE (industries reel)
+    ══════════════════════════════════════ */
+    #marquee {
+      padding: 28px 0;
+      background: rgba(255,255,255,0.04);
+      border-top: 1px solid rgba(255,255,255,0.07);
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      overflow: hidden;
+    }
+    .marquee-track {
+      display: flex; gap: 0; width: max-content;
+      animation: marquee 30s linear infinite;
+    }
+    .marquee-track:hover { animation-play-state: paused; }
+    @keyframes marquee {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .marquee-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 0 52px;
+      font-size: 13px; font-weight: 600;
+      color: rgba(255,255,255,0.25);
+      letter-spacing: .3px; white-space: nowrap;
+    }
+    .marquee-sep {
+      width: 4px; height: 4px; border-radius: 50%;
+      background: rgba(82,51,237,0.3); flex-shrink: 0;
+    }
+
+    /* ══════════════════════════════════════
+       SECTION COMMONS
+    ══════════════════════════════════════ */
+    .section-eyebrow {
+      font-size: 12px; font-weight: 700; letter-spacing: 3px;
+      text-transform: uppercase; color: #a190f5;
+      margin-bottom: 18px;
+    }
+    .section-title {
+      font-size: clamp(34px, 4vw, 60px);
+      font-weight: 500; letter-spacing: -2px; line-height: 1.08;
+      color: #fff; margin-bottom: 16px;
+    }
+    .section-sub {
+      font-size: 17px; color: rgba(255,255,255,0.45);
+      line-height: 1.75;
+    }
+
+    /* ══════════════════════════════════════
+       PROBLEM / CONTEXT SECTION
+    ══════════════════════════════════════ */
+    #problem {
+      padding: 140px 5rem;
+      background: transparent;
+    }
+    .problem-wrap {
+      max-width: 1280px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 100px; align-items: center;
+    }
+
+    .prob-items { margin-top: 44px; display: flex; flex-direction: column; }
+    .prob-item {
+      display: flex; gap: 20px; align-items: flex-start;
+      padding: 22px 0; border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+    .prob-item:first-child { padding-top: 0; }
+    .prob-item:last-child  { border: none; padding-bottom: 0; }
+    .prob-n {
+      font-size: 11px; font-weight: 700;
+      color: var(--border);
+      letter-spacing: 1px; padding-top: 4px;
+      width: 24px; flex-shrink: 0;
+    }
+    .prob-item h4 {
+      font-size: 15px; font-weight: 700;
+      color: #fff; margin-bottom: 4px;
+    }
+    .prob-item p { font-size: 14px; color: rgba(255,255,255,0.4); line-height: 1.65; }
+
+    /* Right panel — dark terminal card */
+    .terminal {
+      border-radius: 2.4rem; overflow: hidden;
+      background: #09090a;
+      border: 1px solid rgba(255,255,255,0.06);
+      box-shadow: 0 40px 80px rgba(16,16,42,0.12), 0 0 0 1px rgba(0,0,0,0.05);
+    }
+    .t-bar {
+      padding: 16px 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      display: flex; align-items: center; gap: 7px;
+    }
+    .t-dot { width: 11px; height: 11px; border-radius: 50%; }
+    .t-dot.r { background: #ff5f57; }
+    .t-dot.y { background: #ffbd2e; }
+    .t-dot.g { background: #28c840; }
+    .t-title {
+      margin-left: auto; font-size: 12px;
+      color: rgba(255,255,255,0.15); letter-spacing: .5px;
+    }
+    .t-body { padding: 28px 26px; }
+    .t-line {
+      display: flex; gap: 12px;
+      font-family: 'SF Mono', 'Fira Code', 'Courier New', monospace;
+      font-size: 13px; line-height: 2.1;
+    }
+    .t-pre  { color: rgba(255,255,255,0.2); flex-shrink: 0; user-select: none; }
+    .t-code { color: rgba(255,255,255,0.5); }
+    .t-code.c { color: #a190f5; }
+    .t-code.d { color: rgba(255,255,255,0.2); }
+    .t-sep { height: 1px; background: rgba(255,255,255,0.05); margin: 12px 0; }
+
+    /* ══════════════════════════════════════
+       SERVICES  (loanpro.io dark cards clone)
+    ══════════════════════════════════════ */
+    #services {
+      padding: 140px 5rem;
+      background: transparent;
+    }
+    .services-hd {
+      text-align: center; max-width: 680px;
+      margin: 0 auto 72px; padding: 0 24px;
+    }
+    .services-hd .section-title { color: #fff; }
+
+    /* Grid: 3 columns */
+    .svc-grid {
+      max-width: 1280px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    /* Card: dark background, very rounded — exactly like loanpro.io */
+    .svc-card {
+      background: #09090a;
+      border-radius: 3rem;
+      overflow: hidden;
+      display: flex; flex-direction: column;
+      transition: transform .3s cubic-bezier(.16,1,.3,1), box-shadow .3s;
+      position: relative;
+    }
+    .svc-card:hover {
+      transform: translateY(-4px) scale(1.01);
+      box-shadow: 0 24px 60px rgba(16,16,42,0.2);
+    }
+    /* Purple variant for alternating cards */
+    .svc-card.purple { background: var(--purple-dark); }
+
+    /* Icon illustration area */
+    .svc-card-vis {
+      height: 180px;
+      display: flex; align-items: center; justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .svc-card-vis::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 80% 80% at 50% 60%,
+        rgba(255,255,255,0.06) 0%, transparent 70%);
+    }
+    .svc-card-vis .svc-icon {
+      width: 88px; height: 88px;
+      position: relative; z-index: 1;
+      filter: drop-shadow(0 8px 24px rgba(161,144,245,0.3));
+      transition: transform .4s cubic-bezier(.16,1,.3,1);
+    }
+    .svc-card:hover .svc-icon { transform: scale(1.08) translateY(-4px); }
+
+    /* Text content */
+    .svc-card-info {
+      padding: 28px 32px 36px;
+      flex: 1; display: flex; flex-direction: column;
+    }
+    .svc-card h3 {
+      font-size: 19px; font-weight: 700;
+      color: #fff; margin-bottom: 12px;
+      letter-spacing: -0.3px;
+    }
+    .svc-card p {
+      font-size: 15px; color: rgba(255,255,255,0.55);
+      line-height: 1.65; margin-bottom: 24px; flex: 1;
+    }
+    .svc-link {
+      color: rgba(255,255,255,0.4);
+      font-size: 14px; font-weight: 600;
+      text-decoration: none;
+      display: inline-flex; align-items: center; gap: 6px;
+      transition: color .2s;
+    }
+    .svc-link:hover { color: #fff; }
+    .svc-link svg { width: 16px; height: 16px; transition: transform .2s; }
+    .svc-link:hover svg { transform: translateX(4px); }
+
+    /* ══════════════════════════════════════
+       PROCESS  (light section, 4 steps)
+    ══════════════════════════════════════ */
+    #process {
+      padding: 140px 5rem;
+      background: transparent;
+    }
+    .process-wrap { max-width: 1280px; margin: 0 auto; }
+    .process-hd { margin-bottom: 80px; }
+    .process-hd .section-eyebrow { color: var(--purple); }
+
+    .steps {
+      display: grid; grid-template-columns: repeat(4,1fr);
+      gap: 32px; position: relative;
+    }
+    .steps::before {
+      content: '';
+      position: absolute; top: 22px; left: 11%; right: 11%;
+      height: 1px;
+      background: linear-gradient(90deg, #a190f5 0%, rgba(255,255,255,0.08) 100%);
+    }
+    .step { padding-right: 24px; }
+    .step-num {
+      width: 44px; height: 44px; border-radius: 50%;
+      border: 1.5px solid rgba(255,255,255,0.15);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 700; color: #a190f5;
+      background: rgba(255,255,255,0.04);
+      position: relative; z-index: 1;
+      margin-bottom: 28px;
+      transition: background .3s, border-color .3s, box-shadow .3s;
+    }
+    .step:hover .step-num {
+      background: rgba(82,51,237,0.15);
+      border-color: #a190f5;
+      box-shadow: 0 0 0 4px rgba(82,51,237,0.12);
+    }
+    .step h3 {
+      font-size: 17px; font-weight: 700; color: #fff;
+      margin-bottom: 10px;
+    }
+    .step p { font-size: 14px; color: rgba(255,255,255,0.4); line-height: 1.7; }
+    .step-week {
+      display: inline-block; margin-top: 18px;
+      font-size: 11px; font-weight: 700; letter-spacing: 2px;
+      text-transform: uppercase; color: #a190f5;
+      opacity: 0.6;
+    }
+
+    /* ══════════════════════════════════════
+       METRICS
+    ══════════════════════════════════════ */
+    #metrics { padding: 140px 5rem; background: transparent; }
+    .metrics-wrap { max-width: 1280px; margin: 0 auto; }
+    .metrics-hd { text-align: center; margin-bottom: 72px; }
+    .metrics-hd .section-sub { margin: 0 auto; max-width: 520px; }
+
+    .metrics-grid {
+      display: grid; grid-template-columns: repeat(4,1fr);
+      border: 1px solid rgba(255,255,255,0.08); border-radius: 2rem;
+      overflow: hidden; background: rgba(255,255,255,0.06);
+      gap: 1px; margin-bottom: 72px;
+    }
+    .metric-cell {
+      background: rgba(255,255,255,0.04); padding: 48px 32px; text-align: center;
+    }
+    .metric-val {
+      font-size: 56px; font-weight: 800; letter-spacing: -3px;
+      line-height: 1; color: #fff; margin-bottom: 10px;
+      display: block;
+    }
+    .metric-val .acc { color: #a190f5; }
+    .metric-lbl { font-size: 14px; color: rgba(255,255,255,0.4); line-height: 1.5; }
+
+    /* Testimonials */
+    .testimonials { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
+    .tc {
+      padding: 36px; border-radius: 2rem;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      display: flex; flex-direction: column; gap: 24px;
+      transition: border-color .25s, box-shadow .25s, transform .25s;
+    }
+    .tc:hover {
+      border-color: rgba(161,144,245,0.3);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+      transform: translateY(-3px);
+    }
+    .tc-stars { color: #f59e0b; font-size: 13px; letter-spacing: 2px; }
+    .tc-quote { font-size: 15px; color: rgba(255,255,255,0.6); line-height: 1.7; flex: 1; }
+    .tc-author { display: flex; align-items: center; gap: 12px; }
+    .tc-av {
+      width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0;
+      background: linear-gradient(135deg, var(--purple-dark), var(--purple));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 700; color: #fff;
+    }
+    .tc-name { font-size: 14px; font-weight: 700; color: #fff; }
+    .tc-role { font-size: 12px; color: rgba(255,255,255,0.35); margin-top: 1px; }
+
+    /* ══════════════════════════════════════
+       CTA  (dark section — loanpro.io style)
+    ══════════════════════════════════════ */
+    #cta {
+      padding: 160px 5rem;
+      background: transparent;
+      position: relative; overflow: hidden;
+      text-align: center;
+    }
+    #cta::before {
+      content: '';
+      position: absolute; top: -200px; left: 50%; transform: translateX(-50%);
+      width: 800px; height: 500px;
+      background: radial-gradient(ellipse, rgba(82,51,237,0.2) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .cta-wrap {
+      max-width: 720px; margin: 0 auto;
+      position: relative; z-index: 1;
+    }
+    #cta .section-eyebrow { color: rgba(161,144,245,0.8); }
+    #cta h2 {
+      font-size: clamp(40px, 5.5vw, 80px);
+      font-weight: 500; letter-spacing: -3px; line-height: 1.04;
+      color: #fff; margin-bottom: 20px;
+    }
+    #cta p {
+      font-size: 18px; color: rgba(237,237,237,0.45);
+      line-height: 1.75; margin-bottom: 52px;
+    }
+    .cta-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .btn-ghost-white {
+      display: inline-block;
+      border: 1px solid rgba(255,255,255,0.16);
+      color: rgba(255,255,255,0.6);
+      padding: 17px 36px; border-radius: 10rem;
+      font-size: 15px; font-weight: 600;
+      text-decoration: none;
+      transition: border-color .2s, color .2s;
+    }
+    .btn-ghost-white:hover { border-color: rgba(255,255,255,0.35); color: #fff; }
+    .cta-contact {
+      margin-top: 56px; padding-top: 44px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      display: flex; justify-content: center;
+      gap: 48px; flex-wrap: wrap;
+    }
+    .cta-contact a {
+      display: flex; align-items: center; gap: 9px;
+      font-size: 14px; font-weight: 500;
+      color: rgba(255,255,255,0.3); text-decoration: none;
+      transition: color .2s;
+    }
+    .cta-contact a:hover { color: rgba(161,144,245,0.9); }
+
+    /* ══════════════════════════════════════
+       FOOTER
+    ══════════════════════════════════════ */
+    footer {
+      padding: 40px 5rem;
+      background: rgba(255,255,255,0.03);
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .footer-in {
+      max-width: 1280px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .f-logo {
+      font-size: 16px; font-weight: 800;
+      color: rgba(255,255,255,0.4);
+    }
+    .f-copy { font-size: 12px; color: rgba(255,255,255,0.25); }
+    .f-links {
+      display: flex; gap: 32px; list-style: none;
+    }
+    .f-links a {
+      font-size: 13px; color: rgba(237,237,237,0.35);
+      text-decoration: none; transition: color .2s;
+    }
+    .f-links a:hover { color: rgba(237,237,237,0.7); }
+
+    /* ══════════════════════════════════════
+       SCROLL REVEAL
+    ══════════════════════════════════════ */
+    .reveal {
+      opacity: 0;
+      transition: opacity .9s cubic-bezier(.16,1,.3,1), transform .9s cubic-bezier(.16,1,.3,1);
+    }
+    .reveal.from-bottom { transform: translateY(56px); }
+    .reveal.from-left   { transform: translateX(-56px); }
+    .reveal.from-right  { transform: translateX(56px); }
+    .reveal.scale-up    { transform: scale(0.92); }
+    .reveal.in { opacity:1; transform: translateY(0) translateX(0) scale(1); }
+    .reveal.d1 { transition-delay: .08s; }
+    .reveal.d2 { transition-delay: .16s; }
+    .reveal.d3 { transition-delay: .24s; }
+    .reveal.d4 { transition-delay: .32s; }
+    .reveal.d5 { transition-delay: .40s; }
+    .reveal.d6 { transition-delay: .48s; }
+
+    /* ══════════════════════════════════════
+       RESPONSIVE
+    ══════════════════════════════════════ */
+    @media (max-width: 1100px) {
+      .svc-grid { grid-template-columns: repeat(2,1fr); }
+      .steps { grid-template-columns: 1fr 1fr; }
+      .steps::before { display: none; }
+      .metrics-grid { grid-template-columns: 1fr 1fr; }
+      .testimonials { grid-template-columns: 1fr; }
+      .problem-wrap { grid-template-columns: 1fr; gap: 56px; }
+    }
+    @media (max-width: 720px) {
+      .nav { padding: 0 1.5rem; }
+      .nav-links { display: none; }
+      #hero, #problem, #services, #process, #metrics, #cta { padding-left: 1.5rem; padding-right: 1.5rem; }
+      footer { padding: 28px 1.5rem; }
+      .footer-in { flex-direction: column; gap: 12px; text-align: center; }
+      .svc-grid { grid-template-columns: 1fr; gap: 16px; }
+      .steps { grid-template-columns: 1fr; }
+      .metric-val { font-size: 44px; }
+      .testimonials { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Scroll progress bar -->
+<div id="progress-bar"></div>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">
+      <svg width="24" height="24" viewBox="0 0 200 200" fill="none">
+        <path d="M16 100 Q100 28 184 100 Q100 172 16 100Z" stroke="#5233ed" stroke-width="14" fill="rgba(82,51,237,0.1)"/>
+        <circle cx="100" cy="100" r="28" stroke="#5233ed" stroke-width="10"/>
+        <circle cx="100" cy="100" r="11" fill="#5233ed"/>
+      </svg>
+      Miru
+    </a>
+    <ul class="nav-links">
+      <li><a href="#services">Servicios</a></li>
+      <li><a href="#process">Proceso</a></li>
+      <li><a href="#metrics">Resultados</a></li>
+    </ul>
+    <a href="#cta" class="nav-cta">Hablar con nosotros</a>
+  </div>
+</nav>
+
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-scene">
+    <canvas id="hero-canvas"></canvas>
+    <div class="hero-scene-veil"></div>
+  </div>
+
+  <div class="hero-inner">
+    <div class="hero-badge reveal from-bottom">
+      <span class="badge-dot"></span>
+      Chihuahua, México · 2026
+    </div>
+    <h1 class="reveal from-bottom d1">
+      La inteligencia<br>
+      de tu empresa,<br>
+      <span class="grad-text">automatizada.</span>
+    </h1>
+    <p class="hero-sub reveal from-bottom d2">
+      Implementamos Claude en tu organización para que los procesos críticos
+      corran solos, el conocimiento no dependa de nadie y dirección
+      tome decisiones en tiempo real.
+    </p>
+    <div class="hero-btns reveal from-bottom d3">
+      <a href="#cta" class="btn-primary">
+        Agendar diagnóstico gratis
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="#services" class="btn-secondary">
+        Ver servicios
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+
+<!-- MARQUEE (industries) -->
+<div id="marquee">
+  <div class="marquee-track" id="mtrack">
+    <span class="marquee-item"><span class="marquee-sep"></span>Automotriz</span>
+    <span class="marquee-item"><span class="marquee-sep"></span>Manufactura</span>
+    <span class="marquee-item"><span class="marquee-sep"></span>Bienes Raíces</span>
+    <span class="marquee-item"><span class="marquee-sep"></span>Salud</span>
+    <span class="marquee-item"><span class="marquee-sep"></span>Retail</span>
+    <span class="marquee-item"><span class="marquee-sep"></span>Logística</span>
+    <span class="marquee-item"><span class="marquee-sep"></span>Servicios Profesionales</span>
+    <span class="marquee-item"><span class="marquee-sep"></span>Construcción</span>
+    <span class="marquee-item"><span class="marquee-sep"></span>Finanzas</span>
+    <span class="marquee-item"><span class="marquee-sep"></span>Tecnología</span>
+    <span class="marquee-item"><span class="marquee-sep"></span>Automotriz</span>
+    <span class="marquee-item"><span class="marquee-sep"></span>Manufactura</span>
+    <span class="marquee-item"><span class="marquee-sep"></span>Bienes Raíces</span>
+    <span class="marquee-item"><span class="marquee-sep"></span>Salud</span>
+    <span class="marquee-item"><span class="marquee-sep"></span>Retail</span>
+    <span class="marquee-item"><span class="marquee-sep"></span>Logística</span>
+    <span class="marquee-item"><span class="marquee-sep"></span>Servicios Profesionales</span>
+    <span class="marquee-item"><span class="marquee-sep"></span>Construcción</span>
+    <span class="marquee-item"><span class="marquee-sep"></span>Finanzas</span>
+    <span class="marquee-item"><span class="marquee-sep"></span>Tecnología</span>
+  </div>
+</div>
+
+
+<!-- PROBLEM / CONTEXT -->
+<section id="problem">
+  <div class="problem-wrap">
+    <div>
+      <p class="section-eyebrow reveal from-left">El contexto</p>
+      <h2 class="section-title reveal from-left d1">Tu equipo ya usa IA.<br>Sin estructura.</h2>
+      <p class="section-sub reveal from-left d2">Las herramientas existen, pero sin integración real el impacto es mínimo y el riesgo, invisible.</p>
+      <div class="prob-items">
+        <div class="prob-item reveal from-left d2">
+          <span class="prob-n">01</span>
+          <div>
+            <h4>Conocimiento fragmentado</h4>
+            <p>Cada persona trabaja con su propio contexto. El saber colectivo no se acumula ni se comparte.</p>
+          </div>
+        </div>
+        <div class="prob-item reveal from-left d3">
+          <span class="prob-n">02</span>
+          <div>
+            <h4>Procesos sin automatizar</h4>
+            <p>Los procedimientos críticos dependen de personas específicas. Si alguien sale, el proceso sale con ellos.</p>
+          </div>
+        </div>
+        <div class="prob-item reveal from-left d4">
+          <span class="prob-n">03</span>
+          <div>
+            <h4>Sin control ni visibilidad</h4>
+            <p>Información sensible de la empresa circula en cuentas personales fuera del alcance de dirección.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="terminal reveal from-right d1">
+      <div class="t-bar">
+        <span class="t-dot r"></span>
+        <span class="t-dot y"></span>
+        <span class="t-dot g"></span>
+        <span class="t-title">antes · después</span>
+      </div>
+      <div class="t-body">
+        <div class="t-line"><span class="t-pre">—</span><span class="t-code d">sin Miru</span></div>
+        <div class="t-line"><span class="t-pre"> </span><span class="t-code">ChatGPT personal, sin contexto</span></div>
+        <div class="t-line"><span class="t-pre"> </span><span class="t-code">mismo proceso repetido cada día</span></div>
+        <div class="t-line"><span class="t-pre"> </span><span class="t-code">conocimiento en 3 personas clave</span></div>
+        <div class="t-line"><span class="t-pre"> </span><span class="t-code">reportes manuales, siempre tarde</span></div>
+        <div class="t-sep"></div>
+        <div class="t-line"><span class="t-pre">✓</span><span class="t-code c">con Miru</span></div>
+        <div class="t-line"><span class="t-pre"> </span><span class="t-code">Claude con el ADN de tu empresa</span></div>
+        <div class="t-line"><span class="t-pre"> </span><span class="t-code">procesos que corren solos, 24/7</span></div>
+        <div class="t-line"><span class="t-pre"> </span><span class="t-code">conocimiento documentado y accesible</span></div>
+        <div class="t-line"><span class="t-pre"> </span><span class="t-code">dashboard en tiempo real para dirección</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="services-hd reveal">
+    <p class="section-eyebrow">Servicios</p>
+    <h2 class="section-title">Lo que implementamos<br>en tu empresa</h2>
+    <p class="section-sub" style="margin-top:14px;">Desde el diagnóstico inicial hasta la automatización completa de operaciones.</p>
+  </div>
+
+  <div class="svc-grid">
+    <div class="svc-card reveal d1">
+      <div class="svc-card-vis">
+        <!-- Diagnóstico: magnifying glass over graph -->
+        <svg class="svc-icon" viewBox="0 0 88 88" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="12" y="48" width="10" height="24" rx="3" fill="rgba(161,144,245,0.5)"/>
+          <rect x="26" y="36" width="10" height="36" rx="3" fill="rgba(161,144,245,0.7)"/>
+          <rect x="40" y="24" width="10" height="48" rx="3" fill="rgba(161,144,245,0.9)"/>
+          <rect x="54" y="38" width="10" height="34" rx="3" fill="rgba(161,144,245,0.6)"/>
+          <circle cx="62" cy="26" r="13" stroke="rgba(255,255,255,0.9)" stroke-width="3" fill="none"/>
+          <line x1="71" y1="35" x2="80" y2="44" stroke="rgba(255,255,255,0.9)" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="svc-card-info">
+        <h3>Diagnóstico y Estrategia</h3>
+        <p>Mapeamos tus procesos, identificamos las oportunidades de mayor impacto y diseñamos la hoja de ruta precisa.</p>
+        <a href="#cta" class="svc-link">Ver más
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="svc-card purple reveal d2">
+      <div class="svc-card-vis">
+        <!-- Conocimiento: brain / neural network -->
+        <svg class="svc-icon" viewBox="0 0 88 88" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="44" cy="44" r="18" stroke="rgba(255,255,255,0.85)" stroke-width="2.5" fill="none"/>
+          <circle cx="44" cy="18" r="6" fill="rgba(255,255,255,0.5)"/>
+          <circle cx="18" cy="54" r="6" fill="rgba(255,255,255,0.5)"/>
+          <circle cx="70" cy="54" r="6" fill="rgba(255,255,255,0.5)"/>
+          <circle cx="44" cy="44" r="5" fill="rgba(255,255,255,0.95)"/>
+          <line x1="44" y1="24" x2="44" y2="39" stroke="rgba(255,255,255,0.5)" stroke-width="2"/>
+          <line x1="23" y1="51" x2="36" y2="47" stroke="rgba(255,255,255,0.5)" stroke-width="2"/>
+          <line x1="65" y1="51" x2="52" y2="47" stroke="rgba(255,255,255,0.5)" stroke-width="2"/>
+          <circle cx="26" cy="26" r="4" fill="rgba(255,255,255,0.3)"/>
+          <circle cx="62" cy="26" r="4" fill="rgba(255,255,255,0.3)"/>
+          <line x1="29" y1="29" x2="39" y2="39" stroke="rgba(255,255,255,0.25)" stroke-width="1.5"/>
+          <line x1="59" y1="29" x2="49" y2="39" stroke="rgba(255,255,255,0.25)" stroke-width="1.5"/>
+        </svg>
+      </div>
+      <div class="svc-card-info">
+        <h3>Base de Conocimiento</h3>
+        <p>Capturamos el saber implícito de tu equipo y lo convertimos en contexto permanente para Claude.</p>
+        <a href="#cta" class="svc-link">Ver más
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="svc-card reveal d3">
+      <div class="svc-card-vis">
+        <!-- Automatización: lightning bolt / gear -->
+        <svg class="svc-icon" viewBox="0 0 88 88" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="44" cy="44" r="20" stroke="rgba(161,144,245,0.5)" stroke-width="2" fill="none" stroke-dasharray="4 4"/>
+          <circle cx="44" cy="44" r="10" fill="rgba(161,144,245,0.3)" stroke="rgba(161,144,245,0.8)" stroke-width="2"/>
+          <circle cx="44" cy="44" r="4" fill="rgba(255,255,255,0.9)"/>
+          <!-- gear teeth -->
+          <rect x="41" y="20" width="6" height="8" rx="2" fill="rgba(161,144,245,0.8)"/>
+          <rect x="41" y="60" width="6" height="8" rx="2" fill="rgba(161,144,245,0.8)"/>
+          <rect x="20" y="41" width="8" height="6" rx="2" fill="rgba(161,144,245,0.8)"/>
+          <rect x="60" y="41" width="8" height="6" rx="2" fill="rgba(161,144,245,0.8)"/>
+          <!-- lightning inside -->
+          <path d="M47 36 L41 44 L45 44 L41 52 L50 42 L46 42 Z" fill="rgba(255,255,255,0.95)"/>
+        </svg>
+      </div>
+      <div class="svc-card-info">
+        <h3>Automatización de Procesos</h3>
+        <p>Cada tarea repetitiva se convierte en una habilidad que Claude ejecuta solo, sin intervención del equipo.</p>
+        <a href="#cta" class="svc-link">Ver más
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="svc-card purple reveal d1">
+      <div class="svc-card-vis">
+        <!-- Agentes: interconnected nodes -->
+        <svg class="svc-icon" viewBox="0 0 88 88" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="44" cy="34" r="10" fill="rgba(255,255,255,0.9)"/>
+          <circle cx="22" cy="62" r="8" fill="rgba(255,255,255,0.55)"/>
+          <circle cx="66" cy="62" r="8" fill="rgba(255,255,255,0.55)"/>
+          <line x1="44" y1="44" x2="26" y2="56" stroke="rgba(255,255,255,0.45)" stroke-width="2"/>
+          <line x1="44" y1="44" x2="62" y2="56" stroke="rgba(255,255,255,0.45)" stroke-width="2"/>
+          <line x1="30" y1="62" x2="58" y2="62" stroke="rgba(255,255,255,0.25)" stroke-width="1.5" stroke-dasharray="3 3"/>
+          <!-- face on main circle -->
+          <circle cx="40" cy="32" r="1.5" fill="rgba(48,34,187,0.8)"/>
+          <circle cx="48" cy="32" r="1.5" fill="rgba(48,34,187,0.8)"/>
+          <path d="M40 38 Q44 41 48 38" stroke="rgba(48,34,187,0.8)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="svc-card-info">
+        <h3>Agentes Autónomos</h3>
+        <p>Cadenas de procesos que se ejecutan proactivamente — desde atender clientes hasta generar reportes.</p>
+        <a href="#cta" class="svc-link">Ver más
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="svc-card reveal d2">
+      <div class="svc-card-vis">
+        <!-- Dashboard: monitor with charts -->
+        <svg class="svc-icon" viewBox="0 0 88 88" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="10" y="16" width="68" height="44" rx="6" stroke="rgba(161,144,245,0.8)" stroke-width="2.5" fill="rgba(161,144,245,0.08)"/>
+          <line x1="10" y1="52" x2="78" y2="52" stroke="rgba(161,144,245,0.3)" stroke-width="1"/>
+          <rect x="18" y="38" width="8" height="12" rx="2" fill="rgba(161,144,245,0.5)"/>
+          <rect x="30" y="30" width="8" height="20" rx="2" fill="rgba(161,144,245,0.7)"/>
+          <rect x="42" y="24" width="8" height="26" rx="2" fill="rgba(161,144,245,0.9)"/>
+          <rect x="54" y="32" width="8" height="18" rx="2" fill="rgba(161,144,245,0.6)"/>
+          <path d="M34 72 L54 72" stroke="rgba(161,144,245,0.5)" stroke-width="3" stroke-linecap="round"/>
+          <line x1="44" y1="60" x2="44" y2="72" stroke="rgba(161,144,245,0.4)" stroke-width="2"/>
+        </svg>
+      </div>
+      <div class="svc-card-info">
+        <h3>Dashboard Ejecutivo</h3>
+        <p>Panel en tiempo real para que dirección vea el negocio sin depender de reportes manuales.</p>
+        <a href="#cta" class="svc-link">Ver más
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="svc-card purple reveal d3">
+      <div class="svc-card-vis">
+        <!-- Integraciones: puzzle / connection -->
+        <svg class="svc-icon" viewBox="0 0 88 88" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Three connected boxes -->
+          <rect x="8" y="34" width="22" height="20" rx="5" fill="rgba(255,255,255,0.2)" stroke="rgba(255,255,255,0.6)" stroke-width="2"/>
+          <rect x="58" y="34" width="22" height="20" rx="5" fill="rgba(255,255,255,0.2)" stroke="rgba(255,255,255,0.6)" stroke-width="2"/>
+          <rect x="33" y="12" width="22" height="20" rx="5" fill="rgba(255,255,255,0.2)" stroke="rgba(255,255,255,0.6)" stroke-width="2"/>
+          <rect x="33" y="56" width="22" height="20" rx="5" fill="rgba(255,255,255,0.2)" stroke="rgba(255,255,255,0.6)" stroke-width="2"/>
+          <!-- Center circle -->
+          <circle cx="44" cy="44" r="9" fill="rgba(255,255,255,0.9)"/>
+          <!-- Connectors -->
+          <line x1="30" y1="44" x2="35" y2="44" stroke="rgba(255,255,255,0.6)" stroke-width="2"/>
+          <line x1="53" y1="44" x2="58" y2="44" stroke="rgba(255,255,255,0.6)" stroke-width="2"/>
+          <line x1="44" y1="32" x2="44" y2="35" stroke="rgba(255,255,255,0.6)" stroke-width="2"/>
+          <line x1="44" y1="53" x2="44" y2="56" stroke="rgba(255,255,255,0.6)" stroke-width="2"/>
+        </svg>
+      </div>
+      <div class="svc-card-info">
+        <h3>Integraciones</h3>
+        <p>Claude conectado con tu CRM, ERP, correo y herramientas existentes. Sin reemplazar tu stack actual.</p>
+        <a href="#cta" class="svc-link">Ver más
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- PROCESS -->
+<section id="process">
+  <div class="process-wrap">
+    <div class="process-hd reveal">
+      <p class="section-eyebrow">Proceso</p>
+      <h2 class="section-title">Cuatro fases.<br>Resultados desde la tercera semana.</h2>
+    </div>
+    <div class="steps">
+      <div class="step reveal d1">
+        <div class="step-num">01</div>
+        <h3>Entender</h3>
+        <p>Evaluamos tu operación, procesos críticos y metas de negocio con el equipo.</p>
+        <span class="step-week">Semana 1–2</span>
+      </div>
+      <div class="step reveal d2">
+        <div class="step-num">02</div>
+        <h3>Documentar</h3>
+        <p>Capturamos el conocimiento implícito y lo estructuramos como activos digitales duraderos.</p>
+        <span class="step-week">Semana 2–4</span>
+      </div>
+      <div class="step reveal d3">
+        <div class="step-num">03</div>
+        <h3>Construir</h3>
+        <p>Desarrollamos skills, agentes y dashboards. Primera entrega funcional en producción.</p>
+        <span class="step-week">Semana 4–8</span>
+      </div>
+      <div class="step reveal d4">
+        <div class="step-num">04</div>
+        <h3>Escalar</h3>
+        <p>Desplegamos en toda la organización, capacitamos al equipo y damos soporte continuo.</p>
+        <span class="step-week">Semana 8–10</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- METRICS -->
+<section id="metrics">
+  <div class="metrics-wrap">
+    <div class="metrics-hd reveal">
+      <p class="section-eyebrow" style="text-align:center">Resultados</p>
+      <h2 class="section-title" style="text-align:center;margin-bottom:14px">Impacto medible<br>en los primeros 90 días</h2>
+      <p class="section-sub">Métricas promedio en nuestros engagements de implementación.</p>
+    </div>
+
+    <div class="metrics-grid reveal d1">
+      <div class="metric-cell">
+        <span class="metric-val" data-target="80" data-suffix="%"><span class="acc">0</span>%</span>
+        <div class="metric-lbl">reducción en tareas repetitivas</div>
+      </div>
+      <div class="metric-cell">
+        <span class="metric-val"><span class="acc" data-target="3" data-suffix="×">0</span>×</span>
+        <div class="metric-lbl">más velocidad en onboarding</div>
+      </div>
+      <div class="metric-cell">
+        <span class="metric-val">+<span class="acc" data-target="40" data-suffix="%">0</span>%</span>
+        <div class="metric-lbl">en productividad del equipo</div>
+      </div>
+      <div class="metric-cell">
+        <span class="metric-val">&lt;<span class="acc" data-target="3" data-suffix="">0</span> sem</span>
+        <div class="metric-lbl">hasta la primera automatización</div>
+      </div>
+    </div>
+
+    <div class="testimonials">
+      <div class="tc reveal d1">
+        <div class="tc-stars">★★★★★</div>
+        <p class="tc-quote">"En seis semanas Claude respondía clientes, generaba cotizaciones y actualizaba el CRM. Lo que antes tomaba horas, ahora tarda minutos."</p>
+        <div class="tc-author">
+          <div class="tc-av">GR</div>
+          <div>
+            <div class="tc-name">Gerente Regional</div>
+            <div class="tc-role">Agencia Automotriz · Chihuahua</div>
+          </div>
+        </div>
+      </div>
+      <div class="tc reveal d2">
+        <div class="tc-stars">★★★★★</div>
+        <p class="tc-quote">"El onboarding de nuevos empleados bajó de tres semanas a cuatro días. Todo el conocimiento de la empresa disponible al instante."</p>
+        <div class="tc-author">
+          <div class="tc-av">DL</div>
+          <div>
+            <div class="tc-name">Director de Operaciones</div>
+            <div class="tc-role">Manufactura · Ciudad Juárez</div>
+          </div>
+        </div>
+      </div>
+      <div class="tc reveal d3">
+        <div class="tc-stars">★★★★★</div>
+        <p class="tc-quote">"Pasamos de reportes manuales que tomaban medio día a un dashboard que se actualiza solo. La visibilidad que tenemos ahora es otra categoría."</p>
+        <div class="tc-author">
+          <div class="tc-av">MV</div>
+          <div>
+            <div class="tc-name">Director General</div>
+            <div class="tc-role">Servicios Profesionales · Chihuahua</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- CTA -->
+<section id="cta">
+  <div class="cta-wrap reveal">
+    <p class="section-eyebrow">Siguiente paso</p>
+    <h2>Empieza con un diagnóstico sin costo.</h2>
+    <p>Una sesión de 30 minutos para identificar dónde Claude genera mayor impacto en tu operación.</p>
+    <div class="cta-btns">
+      <a href="mailto:hola@miru.mx?subject=Diagnóstico Miru" class="btn-primary">
+        Agendar diagnóstico
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="#services" class="btn-ghost-white">Ver servicios</a>
+    </div>
+    <div class="cta-contact">
+      <a href="mailto:hola@miru.mx">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg>
+        hola@miru.mx
+      </a>
+      <a href="tel:+526141234567">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 10.5 19.79 19.79 0 0 1 1.62 1.84 2 2 0 0 1 3.6 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.08 6.08l.98-.98a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        +52 614 123 4567
+      </a>
+      <a href="#">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        Chihuahua, México
+      </a>
+    </div>
+  </div>
+</section>
+
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-in">
+    <span class="f-logo">Miru</span>
+    <ul class="f-links">
+      <li><a href="#services">Servicios</a></li>
+      <li><a href="#process">Proceso</a></li>
+      <li><a href="mailto:hola@miru.mx">Contacto</a></li>
+    </ul>
+    <span class="f-copy">© 2026 Miru · Chihuahua, México</span>
+  </div>
+</footer>
+
+
+<script>
+  /* ═══════════════════════════════════════════════════════
+     SCROLL UTILITIES
+  ═══════════════════════════════════════════════════════ */
+  const nav = document.getElementById('nav');
+  const progressBar = document.getElementById('progress-bar');
+  let lastScrollY = 0;
+
+  function onScroll() {
+    const sy = window.scrollY;
+    const max = document.body.scrollHeight - window.innerHeight;
+
+    // Progress bar
+    progressBar.style.width = (sy / max * 100) + '%';
+
+    // Nav: hide on scroll down, show on scroll up (loanpro.io style)
+    if (sy > lastScrollY && sy > 80) {
+      nav.classList.add('hidden');
+    } else {
+      nav.classList.remove('hidden');
+    }
+    nav.classList.toggle('scrolled', sy > 40);
+    lastScrollY = sy;
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+
+  /* ═══════════════════════════════════════════════════════
+     SCROLL REVEAL
+  ═══════════════════════════════════════════════════════ */
+  document.querySelectorAll('.reveal:not(.from-bottom):not(.from-left):not(.from-right):not(.scale-up)')
+    .forEach(el => el.classList.add('from-bottom'));
+
+  // Hero elements animate in immediately
+  document.querySelectorAll('#hero .reveal').forEach((el, i) => {
+    setTimeout(() => el.classList.add('in'), 100 + i * 110);
+  });
+
+  const revealObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('in');
+        revealObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+  document.querySelectorAll('.reveal:not(#hero .reveal)').forEach(el => revealObs.observe(el));
+
+
+  /* ═══════════════════════════════════════════════════════
+     COUNTER ANIMATION
+  ═══════════════════════════════════════════════════════ */
+  function animCounter(el, target, dur = 1600) {
+    const start = performance.now();
+    (function tick(now) {
+      const p = Math.min((now - start) / dur, 1);
+      const ease = 1 - Math.pow(1 - p, 4);
+      el.textContent = Math.round(ease * target);
+      if (p < 1) requestAnimationFrame(tick);
+      else el.textContent = target;
+    })(start);
+  }
+  new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      e.target.querySelectorAll('[data-target]').forEach(el => animCounter(el, +el.dataset.target));
+    });
+  }, { threshold: 0.3 }).observe(document.querySelector('.metrics-grid'));
+
+
+  /* ═══════════════════════════════════════════════════════
+     SMOOTH ANCHORS
+  ═══════════════════════════════════════════════════════ */
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const t = document.querySelector(a.getAttribute('href'));
+      if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth' }); }
+    });
+  });
+
+
+  /* ═══════════════════════════════════════════════════════
+     HERO CANVAS — loanpro.io exact clone
+     scroll=0   : light bg (#f5f8ff), flat particle terrain at bottom
+     scroll→0.7 : particles form into a large centered sphere
+     scroll→1+  : dark bg (#07070f), sphere rotates continuously
+  ═══════════════════════════════════════════════════════ */
+  (function initHeroCanvas() {
+    const canvas = document.getElementById('hero-canvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const dpr = window.devicePixelRatio || 1;
+    let W, H;
+
+    function resize() {
+      W = window.innerWidth;
+      H = window.innerHeight;
+      canvas.width  = W * dpr;
+      canvas.height = H * dpr;
+      ctx.setTransform(1,0,0,1,0,0);
+      ctx.scale(dpr, dpr);
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    // Two scroll values:
+    // scrollCapped: 0..1 for bg + formation (capped at first viewport)
+    // scrollRaw:    uncapped for continuous rotation throughout the page
+    let scrollCapped = 0, scrollRaw = 0;
+    window.addEventListener('scroll', () => {
+      scrollRaw   = window.scrollY / window.innerHeight;
+      scrollCapped = Math.min(1, scrollRaw);
+    }, { passive: true });
+
+    function lerp(a, b, t) { return a + (b - a) * t; }
+    function lerpColor(a, b, t) {
+      return [
+        Math.round(lerp(a[0], b[0], t)),
+        Math.round(lerp(a[1], b[1], t)),
+        Math.round(lerp(a[2], b[2], t)),
+      ];
+    }
+    // Smooth cubic easing
+    function smoothStep(t) { return t <= 0 ? 0 : t >= 1 ? 1 : t * t * (3 - 2 * t); }
+
+    const BG_LIGHT = [245, 248, 255];
+    const BG_DARK  = [7,   7,   15];
+
+    // ── Build particle system ──
+    // N particles, each with:
+    //   flat position  → scattered terrain at bottom of screen
+    //   sphere position → golden spiral on unit sphere
+    const N = 750;
+    const particles = [];
+
+    for (let i = 0; i < N; i++) {
+      // Sphere destination (golden spiral — even distribution)
+      const th = Math.acos(1 - 2 * (i + 0.5) / N);
+      const ph = Math.PI * (1 + Math.sqrt(5)) * i;
+      const sx = Math.sin(th) * Math.cos(ph);
+      const sy = Math.sin(th) * Math.sin(ph);
+      const sz = Math.cos(th);
+
+      // Flat terrain source — spreads across the bottom half of the screen
+      const a2  = Math.random() * Math.PI * 2;
+      const r2  = Math.sqrt(Math.random());
+      const fx  = 0.5 + Math.cos(a2) * r2 * 0.52;
+      const fy  = 0.78 + Math.sin(a2) * r2 * 0.11 + Math.random() * 0.08;
+
+      particles.push({
+        sx, sy, sz,
+        fx, fy,
+        size: 0.5 + Math.random() * 1.7,
+      });
+    }
+
+    // ── Precompute mesh connections (each particle → 4 nearest sphere neighbors) ──
+    // Done once at init. Used to draw wireframe lines when sphere is formed.
+    const connections = [];
+    const CONN_K = 4;   // neighbors per particle
+    const distThreshold = 0.55 * 0.55;   // squared — prune far pairs
+    for (let i = 0; i < N; i++) {
+      const near = [];
+      for (let j = 0; j < N; j++) {
+        if (j <= i) continue;  // only forward pairs to avoid duplicates
+        const dx = particles[i].sx - particles[j].sx;
+        const dy = particles[i].sy - particles[j].sy;
+        const dz = particles[i].sz - particles[j].sz;
+        const d2 = dx*dx + dy*dy + dz*dz;
+        if (d2 < distThreshold) near.push({ j, d2 });
+      }
+      near.sort((a, b) => a.d2 - b.d2);
+      for (let k = 0; k < Math.min(CONN_K, near.length); k++) {
+        connections.push([i, near[k].j]);
+      }
+    }
+
+    // Reusable buffers
+    const drawBuf  = new Array(N);    // sorted by depth for rendering
+    const screenPos = new Array(N);   // indexed by particle id, for connections
+
+    function frame() {
+      const s  = scrollCapped;   // 0..1 for bg / formation
+      const sr = scrollRaw;      // uncapped for rotation
+
+      // ── 1. Background: #f5f8ff → #07070f over first viewport ──
+      const bg = lerpColor(BG_LIGHT, BG_DARK, s);
+      ctx.fillStyle = `rgb(${bg[0]},${bg[1]},${bg[2]})`;
+      ctx.fillRect(0, 0, W, H);
+
+      // ── 2. Sphere params ──
+      const R   = Math.min(W, H) * 0.42;   // radius: ~42% of smaller dimension
+      const cxS = W * 0.5;
+      const cyS = H * 0.50;
+
+      // Formation: flat terrain (s=0) → sphere (s≥0.7)
+      const formT = smoothStep(Math.min(1, s / 0.7));
+
+      // Rotation: continuous as you scroll through the entire page
+      const ang  = sr * Math.PI * 2.8;
+      const cosA = Math.cos(ang);
+      const sinA = Math.sin(ang);
+
+      // ── 3. Compute positions & fill draw buffer ──
+      for (let i = 0; i < N; i++) {
+        const p = particles[i];
+
+        // Rotate sphere point around Y axis
+        const rx = p.sx * cosA - p.sz * sinA;
+        const ry = p.sy;
+        const rz = p.sx * sinA + p.sz * cosA;
+
+        // Sphere → screen (slight perspective depth cue)
+        const persp = 1 + rz * 0.15;
+        const spx = cxS + rx * R * persp;
+        const spy = cyS + ry * R * persp;
+
+        // Flat terrain → screen
+        const fpx = p.fx * W;
+        const fpy = p.fy * H;
+
+        // Interpolate: flat → sphere as formT goes 0→1
+        const px = lerp(fpx, spx, formT);
+        const py = lerp(fpy, spy, formT);
+
+        drawBuf[i] = { px, py, rz, size: p.size };
+        screenPos[i] = { px, py, rz };  // keep by index for connection lookup
+      }
+
+      // Sort back→front for proper depth rendering
+      drawBuf.sort((a, b) => a.rz - b.rz);
+
+      // ── 4. Draw mesh connections (wireframe lines, only when sphere is forming) ──
+      if (formT > 0.05) {
+        const lineAlpha = formT * formT * 0.18;   // fade in as sphere forms
+        // Light bg: indigo lines; dark bg: lavender lines
+        let lr, lg, lb;
+        if (s < 0.5) { lr=75; lg=55; lb=215; }
+        else { lr=170; lg=158; lb=255; }
+
+        // Batch all lines into ONE path for GPU-friendly rendering
+        ctx.lineWidth = 0.6;
+        ctx.strokeStyle = `rgba(${lr},${lg},${lb},${lineAlpha.toFixed(3)})`;
+        ctx.beginPath();
+        for (let ci = 0; ci < connections.length; ci++) {
+          const [i, j] = connections[ci];
+          const di = screenPos[i], dj = screenPos[j];
+          ctx.moveTo(di.px, di.py);
+          ctx.lineTo(dj.px, dj.py);
+        }
+        ctx.stroke();
+      }
+
+      // ── 5. Draw particles ──
+      for (let i = 0; i < N; i++) {
+        const d     = drawBuf[i];
+        const depth = (d.rz + 1) * 0.5;   // 0 = back, 1 = front
+
+        // Alpha: depth-based in sphere state, flatter on terrain
+        const sphereA = 0.04 + depth * 0.82;
+        const flatA   = 0.18 + Math.random() * 0.05;   // slight sparkle
+        const alpha   = lerp(flatA, sphereA, formT);
+
+        // Dot radius
+        const dotR = d.size * lerp(0.65, 0.35 + depth * 0.78, formT);
+
+        // Color:
+        //   s=0   → dark indigo particles on light bg
+        //   s=0.5 → transition
+        //   s=1   → lavender/white particles on dark bg
+        let r, g, b;
+        if (s < 0.5) {
+          const t2 = s * 2;
+          r = Math.round(lerp(75,  155, t2));
+          g = Math.round(lerp(55,  130, t2));
+          b = Math.round(lerp(215, 245, t2));
+        } else {
+          const t2 = (s - 0.5) * 2;
+          r = Math.round(lerp(155, 195, t2));
+          g = Math.round(lerp(130, 180, t2));
+          b = Math.round(lerp(245, 255, t2));
+        }
+
+        ctx.beginPath();
+        ctx.arc(d.px, d.py, Math.max(0.35, dotR), 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${r},${g},${b},${alpha.toFixed(3)})`;
+        ctx.fill();
+      }
+
+      requestAnimationFrame(frame);
+    }
+    frame();
+  })();
+
+
+  // Service card icons animate on hover via CSS — no extra JS needed
+
+</script>
+
+</body>
+</html>
