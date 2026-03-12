@@ -688,13 +688,6 @@
 
     /* Mobile: ≤ 767px */
     @media (max-width: 767px) {
-      /* ── On mobile: always show section content (no canvas-driven opacity) ── */
-      #problem  .section-body-zone, #problem  .section-body-zone.reveal.in, #problem  .section-body-zone.reveal.out,
-      #services .section-body-zone, #services .section-body-zone.reveal.in, #services .section-body-zone.reveal.out,
-      #process  .section-body-zone, #process  .section-body-zone.reveal.in, #process  .section-body-zone.reveal.out,
-      #metrics  .section-body-zone, #metrics  .section-body-zone.reveal.in, #metrics  .section-body-zone.reveal.out {
-        opacity: 1 !important;
-      }
       /* ── Nav ── */
       .nav-inner { grid-template-columns: 1fr auto; }
       .nav-links { display: none; }
@@ -709,18 +702,13 @@
       .hero-btns { flex-direction: column; align-items: stretch; gap: 12px; }
       .btn-primary, .btn-secondary { width: 100%; justify-content: center; padding: 15px 20px; font-size: 14px; }
 
-      /* ── Sections ── */
+      /* ── Sections: keep scroll-driven but centered (no horizontal shift) ── */
       #problem, #services, #process, #metrics {
-        min-height: auto;
-        padding: clamp(72px,10vh,100px) clamp(1rem,5vw,1.75rem) clamp(80px,10vh,120px);
+        min-height: 220vh;
+        padding: clamp(56px,8vh,90px) clamp(1rem,5vw,1.75rem) clamp(80px,10vh,120px);
       }
-      /* Disable sticky on mobile — sections scroll normally */
-      .section-sticky { position: static; top: auto; }
-      .section-title { font-size: clamp(26px, 7.5vw, 42px); letter-spacing: -1px; line-height: 1.1; }
-      .section-sub { font-size: 14px; }
-      .section-hd-center { margin-bottom: clamp(1.5rem, 4vh, 2.5rem); }
-
-      /* ── No horizontal figure shift on mobile ── */
+      /* Sticky stays, but no horizontal shift (JS also disabled for mobile) */
+      .section-sticky { top: clamp(2rem, 6vh, 4rem); }
       #problem .section-sticky,
       #services .section-sticky,
       #process .section-sticky,
@@ -728,6 +716,9 @@
         padding-right: 0 !important;
         padding-left:  0 !important;
       }
+      .section-title { font-size: clamp(26px, 7.5vw, 42px); letter-spacing: -1px; line-height: 1.1; }
+      .section-sub { font-size: 14px; }
+      .section-hd-center { margin-bottom: clamp(1.5rem, 4vh, 2.5rem); }
 
       /* ── Problem section ── */
       .prob-item { gap: 14px; padding: 18px 0; }
@@ -736,28 +727,14 @@
       .prob-item p  { font-size: 13px; }
       .terminal { padding: 20px 16px; font-size: 12px; }
 
-      /* ── Services ── */
+      /* ── Services: keep group swap, but 1-col layout ──
+         svc-group stays position:absolute (scroll-driven swap works),
+         grp-hidden stays display via opacity (JS controls it).
+         On mobile only show one group at a time — use display:none instead of opacity */
       .services-hd { margin-bottom: 48px; }
-      /* On mobile: both groups in normal flow, stacked vertically */
-      .svc-grid { min-height: unset; position: static; }
-      .svc-group {
-        position: static !important;
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 28px;
-        margin-bottom: 28px;
-      }
-      /* Show all cards (no scroll-driven opacity animation on mobile) */
-      .svc-card, .metric-cell {
-        opacity: 1 !important;
-        transform: none !important;
-      }
-      /* Hide second group normally hidden by JS — on mobile show both */
-      .svc-group.grp-hidden {
-        opacity: 1 !important;
-        pointer-events: auto !important;
-        display: grid !important;
-      }
+      .svc-grid { min-height: 70vh; }
+      .svc-group { grid-template-columns: 1fr; gap: 24px; }
+      .grp-hidden { display: none !important; }
       .svc-card h3 { font-size: 15px; }
       .svc-card p  { font-size: 13px; }
 
@@ -770,8 +747,8 @@
 
       /* ── Metrics ── */
       .metrics-hd { margin-bottom: 48px; }
-      .metrics-body { min-height: unset; }
-      .metrics-grid { grid-template-columns: 1fr; gap: 36px; }
+      .metrics-body { min-height: 60vh; }
+      .metrics-grid { grid-template-columns: 1fr 1fr; gap: 28px; }
       .metric-val { font-size: 52px; letter-spacing: -3px; }
       .metric-label { font-size: 13px; }
 
