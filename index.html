@@ -11,11 +11,11 @@
 
     :root {
       --bg:          #f5f8ff;
-      --purple:      #5233ed;
-      --purple-dark: #3022bb;
-      --accent:      rgb(82, 51, 237);
-      --accent-rgb:  82, 51, 237;
-      --purple-deep: #171768;
+      --purple:      #185FA5;
+      --purple-dark: #134f8a;
+      --accent:      rgb(24, 95, 165);
+      --accent-rgb:  24, 95, 165;
+      --purple-deep: #1D2B3A;
       --text:        #27313f;
       --text-light:  #b8bfd1;
       --border:      #dee4ef;
@@ -36,7 +36,7 @@
       overflow-x: hidden;
     }
 
-    ::selection { background: rgba(161,144,245,0.3); }
+    ::selection { background: rgba(181,212,244,0.3); }
 
     /* ══════════════════════════════════════
        SCROLL PROGRESS
@@ -186,16 +186,16 @@
       margin-bottom: 28px;
     }
 
-    /* Gradient shimmer text — cycles through purple tones */
+    /* Gradient shimmer text — cycles through blue tones */
     .grad-text {
       background: linear-gradient(90deg,
-        #5233ed 0%,
-        #a190f5 20%,
-        #3022bb 35%,
-        #c084fc 50%,
-        #5233ed 65%,
-        #818cf8 80%,
-        #5233ed 100%
+        #185FA5 0%,
+        #378ADD 20%,
+        #134f8a 35%,
+        #B5D4F4 50%,
+        #185FA5 65%,
+        #378ADD 80%,
+        #185FA5 100%
       );
       background-size: 300% auto;
       -webkit-background-clip: text;
@@ -387,7 +387,7 @@
     }
     .t-pre  { color: rgba(255,255,255,0.2); flex-shrink: 0; user-select: none; }
     .t-code { color: rgba(255,255,255,0.5); }
-    .t-code.c { color: #a190f5; }
+    .t-code.c { color: #378ADD; }
     .t-code.d { color: rgba(255,255,255,0.2); }
     .t-sep { height: 1px; background: rgba(255,255,255,0.05); margin: 12px 0; }
 
@@ -447,7 +447,7 @@
       line-height: 1.7; margin-bottom: 20px;
     }
     .svc-link {
-      color: #a190f5; font-size: 13px; font-weight: 600;
+      color: #378ADD; font-size: 13px; font-weight: 600;
       text-decoration: none; opacity: 0.7;
       display: inline-flex; align-items: center; gap: 6px;
       transition: opacity .2s;
@@ -930,10 +930,10 @@
       <div class="svc-card-vis">
         <!-- Diagnóstico: magnifying glass over graph -->
         <svg class="svc-icon" viewBox="0 0 88 88" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="12" y="48" width="10" height="24" rx="3" fill="rgba(161,144,245,0.5)"/>
-          <rect x="26" y="36" width="10" height="36" rx="3" fill="rgba(161,144,245,0.7)"/>
-          <rect x="40" y="24" width="10" height="48" rx="3" fill="rgba(161,144,245,0.9)"/>
-          <rect x="54" y="38" width="10" height="34" rx="3" fill="rgba(161,144,245,0.6)"/>
+          <rect x="12" y="48" width="10" height="24" rx="3" fill="rgba(181,212,244,0.5)"/>
+          <rect x="26" y="36" width="10" height="36" rx="3" fill="rgba(181,212,244,0.7)"/>
+          <rect x="40" y="24" width="10" height="48" rx="3" fill="rgba(181,212,244,0.9)"/>
+          <rect x="54" y="38" width="10" height="34" rx="3" fill="rgba(181,212,244,0.6)"/>
           <circle cx="62" cy="26" r="13" stroke="rgba(255,255,255,0.9)" stroke-width="3" fill="none"/>
           <line x1="71" y1="35" x2="80" y2="44" stroke="rgba(255,255,255,0.9)" stroke-width="3" stroke-linecap="round"/>
         </svg>
@@ -972,14 +972,14 @@
       <div class="svc-card-vis">
         <!-- Automatización: lightning bolt / gear -->
         <svg class="svc-icon" viewBox="0 0 88 88" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="44" cy="44" r="20" stroke="rgba(161,144,245,0.5)" stroke-width="2" fill="none" stroke-dasharray="4 4"/>
-          <circle cx="44" cy="44" r="10" fill="rgba(161,144,245,0.3)" stroke="rgba(161,144,245,0.8)" stroke-width="2"/>
+          <circle cx="44" cy="44" r="20" stroke="rgba(181,212,244,0.5)" stroke-width="2" fill="none" stroke-dasharray="4 4"/>
+          <circle cx="44" cy="44" r="10" fill="rgba(181,212,244,0.3)" stroke="rgba(181,212,244,0.8)" stroke-width="2"/>
           <circle cx="44" cy="44" r="4" fill="rgba(255,255,255,0.9)"/>
           <!-- gear teeth -->
-          <rect x="41" y="20" width="6" height="8" rx="2" fill="rgba(161,144,245,0.8)"/>
-          <rect x="41" y="60" width="6" height="8" rx="2" fill="rgba(161,144,245,0.8)"/>
-          <rect x="20" y="41" width="8" height="6" rx="2" fill="rgba(161,144,245,0.8)"/>
-          <rect x="60" y="41" width="8" height="6" rx="2" fill="rgba(161,144,245,0.8)"/>
+          <rect x="41" y="20" width="6" height="8" rx="2" fill="rgba(181,212,244,0.8)"/>
+          <rect x="41" y="60" width="6" height="8" rx="2" fill="rgba(181,212,244,0.8)"/>
+          <rect x="20" y="41" width="8" height="6" rx="2" fill="rgba(181,212,244,0.8)"/>
+          <rect x="60" y="41" width="8" height="6" rx="2" fill="rgba(181,212,244,0.8)"/>
           <!-- lightning inside -->
           <path d="M47 36 L41 44 L45 44 L41 52 L50 42 L46 42 Z" fill="rgba(255,255,255,0.95)"/>
         </svg>
@@ -1004,9 +1004,9 @@
           <line x1="44" y1="44" x2="62" y2="56" stroke="rgba(255,255,255,0.45)" stroke-width="2"/>
           <line x1="30" y1="62" x2="58" y2="62" stroke="rgba(255,255,255,0.25)" stroke-width="1.5" stroke-dasharray="3 3"/>
           <!-- face on main circle -->
-          <circle cx="40" cy="32" r="1.5" fill="rgba(48,34,187,0.8)"/>
-          <circle cx="48" cy="32" r="1.5" fill="rgba(48,34,187,0.8)"/>
-          <path d="M40 38 Q44 41 48 38" stroke="rgba(48,34,187,0.8)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+          <circle cx="40" cy="32" r="1.5" fill="rgba(24,95,165,0.8)"/>
+          <circle cx="48" cy="32" r="1.5" fill="rgba(24,95,165,0.8)"/>
+          <path d="M40 38 Q44 41 48 38" stroke="rgba(24,95,165,0.8)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
         </svg>
       </div>
       <div class="svc-card-info">
@@ -1019,14 +1019,14 @@
       <div class="svc-card-vis">
         <!-- Dashboard: monitor with charts -->
         <svg class="svc-icon" viewBox="0 0 88 88" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="10" y="16" width="68" height="44" rx="6" stroke="rgba(161,144,245,0.8)" stroke-width="2.5" fill="rgba(161,144,245,0.08)"/>
-          <line x1="10" y1="52" x2="78" y2="52" stroke="rgba(161,144,245,0.3)" stroke-width="1"/>
-          <rect x="18" y="38" width="8" height="12" rx="2" fill="rgba(161,144,245,0.5)"/>
-          <rect x="30" y="30" width="8" height="20" rx="2" fill="rgba(161,144,245,0.7)"/>
-          <rect x="42" y="24" width="8" height="26" rx="2" fill="rgba(161,144,245,0.9)"/>
-          <rect x="54" y="32" width="8" height="18" rx="2" fill="rgba(161,144,245,0.6)"/>
-          <path d="M34 72 L54 72" stroke="rgba(161,144,245,0.5)" stroke-width="3" stroke-linecap="round"/>
-          <line x1="44" y1="60" x2="44" y2="72" stroke="rgba(161,144,245,0.4)" stroke-width="2"/>
+          <rect x="10" y="16" width="68" height="44" rx="6" stroke="rgba(181,212,244,0.8)" stroke-width="2.5" fill="rgba(181,212,244,0.08)"/>
+          <line x1="10" y1="52" x2="78" y2="52" stroke="rgba(181,212,244,0.3)" stroke-width="1"/>
+          <rect x="18" y="38" width="8" height="12" rx="2" fill="rgba(181,212,244,0.5)"/>
+          <rect x="30" y="30" width="8" height="20" rx="2" fill="rgba(181,212,244,0.7)"/>
+          <rect x="42" y="24" width="8" height="26" rx="2" fill="rgba(181,212,244,0.9)"/>
+          <rect x="54" y="32" width="8" height="18" rx="2" fill="rgba(181,212,244,0.6)"/>
+          <path d="M34 72 L54 72" stroke="rgba(181,212,244,0.5)" stroke-width="3" stroke-linecap="round"/>
+          <line x1="44" y1="60" x2="44" y2="72" stroke="rgba(181,212,244,0.4)" stroke-width="2"/>
         </svg>
       </div>
       <div class="svc-card-info">
@@ -1327,13 +1327,13 @@
 
     // Scroll-driven accent color (index 0 = hero purple, 1-4 = sections)
     const SECT_COLORS = [
-      [ 82,  51, 237],  // 0: hero      — purple
+      [ 24,  95, 165],  // 0: hero      — blue
       [244,  63,  94],  // 1: problem   — rose
       [ 16, 185, 129],  // 2: solutions — emerald
       [245, 158,  11],  // 3: process   — amber
       [ 56, 189, 248],  // 4: results   — sky
     ];
-    let accentR = 82, accentG = 51, accentB = 237; // initial purple
+    let accentR = 24, accentG = 95, accentB = 165; // initial blue
 
     // Rotation with inertia
     let rotAngle     = 0;          // accumulated angle (radians)
@@ -1792,8 +1792,8 @@
 
         // Wave base color (blue-ish field)
         let wr, wg, wb;
-        if (s < 0.5) { const t2=s*2; wr=Math.round(lerp(75,155,t2)); wg=Math.round(lerp(55,130,t2)); wb=Math.round(lerp(215,245,t2)); }
-        else { const t2=(s-0.5)*2; wr=Math.round(lerp(155,195,t2)); wg=Math.round(lerp(130,180,t2)); wb=Math.round(lerp(245,255,t2)); }
+        if (s < 0.5) { const t2=s*2; wr=Math.round(lerp(20,55,t2)); wg=Math.round(lerp(80,130,t2)); wb=Math.round(lerp(180,210,t2)); }
+        else { const t2=(s-0.5)*2; wr=Math.round(lerp(55,100,t2)); wg=Math.round(lerp(130,170,t2)); wb=Math.round(lerp(210,235,t2)); }
         // Shape color: accent with depth variation
         const df = 0.45 + depth * 0.55;
         let r = Math.round(lerp(wr, Math.min(255, accentR * df), formT));
