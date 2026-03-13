@@ -1709,12 +1709,13 @@
         document.documentElement.style.setProperty('--accent-rgb', `${accentR},${accentG},${accentB}`);
       }
 
-      // bodyT: same forming as formT but stays at 1 (no dissolve) — drives content visibility
+      // bodyT: content appears with figure, stays visible, dissolves at end of section
       const p_body = (found >= 0 && sectionProgs[found] < 1) ? sectionProgs[found] : 0;
       let bodyT = 0;
       if      (p_body < 0.02) bodyT = 0;
       else if (p_body < 0.18) bodyT = smoothStep((p_body - 0.02) / 0.16);
-      else                    bodyT = 1;
+      else if (p_body < 0.92) bodyT = 1;
+      else                    bodyT = smoothStep(1 - (p_body - 0.92) / 0.08);
 
       // Expose to CSS: formT for canvas figure, bodyT for section content
       document.documentElement.style.setProperty('--form-t', formT.toFixed(3));
