@@ -99,10 +99,12 @@
       transition: background .2s, transform .2s, box-shadow .2s;
       overflow: hidden; position: relative;
     }
-    .nav-cta:hover {
-      background: var(--purple-dark);
+    .nav-cta:hover, .nav-cta:focus {
+      background: var(--accent);
       transform: translateY(-1px);
       box-shadow: 0 6px 20px rgba(var(--accent-rgb),0.35);
+      outline: 2px solid rgba(var(--accent-rgb),0.5);
+      outline-offset: 2px;
     }
 
     /* ══════════════════════════════════════
