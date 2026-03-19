@@ -690,20 +690,16 @@
 
     /* Mobile: ≤ 767px */
     @media (max-width: 767px) {
-      /* ── Text readability over canvas figure ── */
-      .section-sticky {
+      /* ── Text readability over canvas figure (exclude hero and CTA) ── */
+      #problem .section-sticky,
+      #services .section-sticky,
+      #process .section-sticky,
+      #metrics .section-sticky {
         background: rgba(7, 7, 15, 0.55);
         backdrop-filter: blur(12px);
         -webkit-backdrop-filter: blur(12px);
         border-radius: 20px;
         padding: 28px 20px !important;
-      }
-      #hero .hero-inner {
-        background: rgba(7, 7, 15, 0.45);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        border-radius: 20px;
-        padding: 32px 24px;
       }
       /* ── Nav ── */
       .nav-inner { grid-template-columns: 1fr auto; }
