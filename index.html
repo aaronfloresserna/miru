@@ -115,7 +115,7 @@
       background: transparent;
       display: flex; flex-direction: column; align-items: center;
       justify-content: center;
-      padding: clamp(100px,12vh,140px) clamp(1.25rem,5vw,5rem) 80px;
+      padding: clamp(72px,8vh,100px) clamp(1.25rem,5vw,5rem) 80px;
       position: relative;
       text-align: center;
       z-index: 1;
@@ -213,6 +213,15 @@
       color: var(--text-light);
       line-height: 1.7; max-width: 600px;
       margin: 0 auto 48px;
+    }
+
+    .hero-kanji {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
     }
 
     .hero-btns {
@@ -822,11 +831,9 @@
   </div>
 
   <div class="hero-inner">
-    <div class="hero-badge reveal from-bottom d1">
-      <span class="badge-dot"></span>
-      <span data-i18n="hero.badge">Chihuahua, México</span>
-    </div>
-    <h1 class="reveal from-bottom d2" data-i18n="hero.h1">Your company's<br>intelligence,<br><span class="grad-text">automated.</span></h1>
+    <p class="hero-kanji reveal from-bottom">見る · Miru · "To see"</p>
+    <h1 class="reveal from-bottom" data-i18n="hero.h1">See your AI future <span class="grad-text">clearly.</span></h1>
+    <p class="hero-sub reveal from-bottom" data-i18n="hero.sub">We help companies understand where AI, data, and automation should go and how to implement them successfully.</p>
     <div class="hero-btns reveal from-bottom d3">
       <a href="https://wa.me/526141422507" target="_blank" rel="noopener" class="btn-primary">
         <span data-i18n="hero.btn1">Schedule free diagnosis</span>
@@ -1828,7 +1835,8 @@
     en: {
       'nav.services':'Services','nav.process':'Process','nav.results':'Results','nav.cta':'Talk to us',
       'hero.badge':'Chihuahua, México',
-      'hero.h1':'Your company\'s<br>intelligence,<br><span class="grad-text">automated.</span>',
+      'hero.h1':'See your AI future <span class="grad-text">clearly.</span>',
+      'hero.sub':'We help companies understand where AI, data, and automation should go and how to implement them successfully.',
       'hero.btn1':'Schedule free diagnosis','hero.btn2':'See services',
       'm.auto':'Automotive','m.mfg':'Manufacturing','m.re':'Real Estate','m.health':'Healthcare',
       'm.retail':'Retail','m.log':'Logistics','m.pro':'Professional Services',
@@ -1869,7 +1877,8 @@
     es: {
       'nav.services':'Servicios','nav.process':'Proceso','nav.results':'Resultados','nav.cta':'Hablar con nosotros',
       'hero.badge':'Chihuahua, México',
-      'hero.h1':'La inteligencia<br>de tu empresa,<br><span class="grad-text">automatizada.</span>',
+      'hero.h1':'Ve con claridad tu futuro<br>con <span class="grad-text">IA.</span>',
+      'hero.sub':'Ayudamos a las empresas a entender adónde debe ir la IA, los datos y la automatización y cómo implementarlos.',
       'hero.btn1':'Agendar diagnóstico gratis','hero.btn2':'Ver servicios',
       'm.auto':'Automotriz','m.mfg':'Manufactura','m.re':'Bienes Raíces','m.health':'Salud',
       'm.retail':'Retail','m.log':'Logística','m.pro':'Servicios Profesionales',
@@ -1909,7 +1918,7 @@
     }
   };
 
-  let currentLang = 'en';
+  let currentLang = 'es';
   function applyLang(lang) {
     currentLang = lang;
     document.querySelectorAll('[data-i18n]').forEach(el => {
@@ -1917,12 +1926,12 @@
       if (val !== undefined) el.innerHTML = val;
     });
     const btn = document.getElementById('lang-btn');
-    btn.textContent = lang === 'en' ? 'ES' : 'EN';
+    btn.textContent = lang === 'es' ? 'EN' : 'ES';
   }
   document.getElementById('lang-btn').addEventListener('click', () => {
-    applyLang(currentLang === 'en' ? 'es' : 'en');
+    applyLang(currentLang === 'es' ? 'en' : 'es');
   });
-  applyLang('en');
+  applyLang('es');
 
 </script>
 
